@@ -1,19 +1,20 @@
 import mainView from '../main'
 import CodeMirror from "codemirror"
-
 const main = mainView()
 export default () => {
     return {
         mount: function() {
             main.mount()
             const elements = [].slice.call(document.querySelectorAll('.snippet-area'))
-            const value = (document.getElementById('language-selector').value).trim('')
             window.CodeMirror = window.CodeMirror || CodeMirror
             this.codeMirrors = elements.map((element) => {
-                let lang = element.language
-                let snippet = element.snippet
+                let lang = element.getAttribute('language')
+                let snippet = element.getAttribute('snippet')
+                console.log(snippet)
                 return window._module.import('http://localhost:8000/'+lang+'/'+lang+'.js').then((res) => {
-                    return CodeMirror.fromTextArea(element, { lineNumbers: true, mode: lang, readOnly: 'nocursor', value: snippet});
+                    let editor = CodeMirror.fromTextArea(element, {lineNumbers: true, mode: lang, readOnly: 'nocursor', theme: 'blackboard'});
+                    editor.getDoc().setValue(snippet)
+                    return editor
                 })
             })
 

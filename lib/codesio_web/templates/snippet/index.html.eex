@@ -1,11 +1,13 @@
 <h2>Snippets</h2>
+<span><%= link "New Snippet", to: snippet_path(@conn, :new) %></span>
 <div class='snippet-container'>
-  <%= for snippet <- @snippets do %>
-    <textarea class="snippet-area" language="<%= snippet.language %>" snippet="<%=snippet.snippet%>"></textarea>
+  <%= for {snippet, i} <- Enum.with_index(@snippets) do %>
+    <div class='snippet-area-container' style="order:<%=i%>;">
+      <textarea class="snippet-area" language="<%=snippet.language%>" snippet="<%=snippet.snippet%>"></textarea>
+    </div>
   <% end %>
 </div>
 
-<span><%= link "New Snippet", to: snippet_path(@conn, :new) %></span>
 <span id="common-js" data-main="<%= static_path(@conn, "/js/app.js") %>" />
 
       <%# <td class="text-right"> %>

@@ -19,6 +19,7 @@ defmodule CodesioWeb do
 
   @supported_languages File.read!("assets/static/supported_languages.txt")
                        |> String.split("\n")
+                       |> Enum.map(fn str -> String.trim(to_string(str)) end)
   def get_supported_languages() do
     @supported_languages
   end

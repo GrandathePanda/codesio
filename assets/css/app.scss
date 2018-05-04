@@ -22,4 +22,15 @@
     background-color: #E05f36;
     color: #eeeeee;
 }
+.snippet-container {
+    display: flex;
+    flex-flow: row wrap;
+    /* justify-content: space-around; */
+    min-width: 0px;
+}
+.snippet-area-container {
+    min-width: 0px;
+    height: 400px;
+    width: 400px;
+}
 
