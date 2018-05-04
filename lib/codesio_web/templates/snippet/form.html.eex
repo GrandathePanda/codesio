@@ -1,0 +1,26 @@
+<%= form_for @changeset, @action, fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p>Oops, something went wrong! Please check the errors below.</p>
+    </div>
+  <% end %>
+  <div class="form-group">
+    <%= label f, :snippet, class: "control-label" %>
+    <%= textarea f, :snippet, class: "form-control snippet-editor" %>
+    <%= error_tag f, :snippet %>
+  </div>
+  <div class="form-group">
+    <%= label f, :tags, class: "control-label" %>
+    <%= text_input f, :tags, class: "form-control tagify-me"%>
+    <%= error_tag f, :tags %>
+  </div>
+  <div class="form-group new-snippet-spacing">
+    <%= label f, :language, class: "control-label"%>
+    <%= select f, :language, @languages, class: 'form-control', onChange: "window.currentView.changeLanguage(event)", id: "language-selector"%>
+    <%= error_tag f, :language %>
+  </div>
+  <div class="form-group" id="new-snippet-submit">
+    <%= submit "Submit", class: "btn btn-primary" %>
+  </div>
+  <span id="common-js" data-main="<%= static_path(@conn, "/js/app.js") %>" />
+<% end %>

@@ -1,0 +1,25 @@
+/* This file is for your main application css. */
+
+.tagify-me-text {
+    border: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.new-snippet-spacing {
+    margin-top: 8%;
+}
+.tagify-me-ul {
+    margin-top: 8px;
+    margin-bottom: 0;
+    display:block;
+    text-decoration: none;
+    color: rgb(5, 120, 175);
+    margin-left: 3px;
+    padding:0px;
+}
+.tagify-me-li {
+    background-color: #E05f36;
+    color: #eeeeee;
+}
+

@@ -1,0 +1,15 @@
+<h2>Snippets</h2>
+<div class='snippet-container'>
+  <%= for snippet <- @snippets do %>
+    <textarea class="snippet-area" language="<%= snippet.language %>" snippet="<%=snippet.snippet%>"></textarea>
+  <% end %>
+</div>
+
+<span><%= link "New Snippet", to: snippet_path(@conn, :new) %></span>
+<span id="common-js" data-main="<%= static_path(@conn, "/js/app.js") %>" />
+
+      <%# <td class="text-right"> %>
+      <%#   <span><%= link "Show", to: snippet_path(@conn, :show, snippet), class: "btn btn-default btn-xs" %1></span> %>
+      <%#   <span><%= link "Edit", to: snippet_path(@conn, :edit, snippet), class: "btn btn-default btn-xs" %1></span> %>
+      <%#   <span><%= link "Delete", to: snippet_path(@conn, :delete, snippet), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %1></span> %>
+      <%# </td> %>

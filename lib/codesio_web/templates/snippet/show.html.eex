@@ -1,0 +1,8 @@
+<h2>Show Snippet</h2>
+
+<ul>
+
+</ul>
+
+<span><%= link "Edit", to: snippet_path(@conn, :edit, @snippet) %></span>
+<span><%= link "Back", to: snippet_path(@conn, :index) %></span>
