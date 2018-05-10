@@ -9,10 +9,19 @@ After talking a bit he was like,
 So here we are.
 
 Basically, the web app is a simple crud application with a little bells and whistles on top to accomodate the dynamic language highlighting and special search.
-Elasticsearch tends to work well for things like this so I will be using ES to handle the more complex querying and then if I have the time since one of my main interests is
+Elasticsearch tends to work well for things like this so I use ES to handle the more complex querying and then if I have the time since one of my main interests is
 ML I will implement an auto tagger. If I continue doing this past the two weeks I may even write a content crawler.
 
-So far user accounts, and snippet submission are working. The rest should come pretty quickly, elixir+Phoenix = win.
+## Features that are finished:
+ - Account creation and login
+ - Realtime search for snippets using elasticsearch and phoenix channels + websockets
+ - Adding, editing, deleting, inspecting Snippets
+
+## Features to be finished shortly:
+ - Rating snippets, sorting by highest rated
+ - All the UI styling
+ - filters (language, time)
+ - list of all snippets submitted by a user
 
 To start your Phoenix server:
 
