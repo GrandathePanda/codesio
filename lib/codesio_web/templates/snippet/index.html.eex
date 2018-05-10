@@ -1,17 +1,13 @@
 <h2>Snippets</h2>
 <span><%= link "New Snippet", to: snippet_path(@conn, :new) %></span>
-<div class='snippet-container'>
-  <%= for {snippet, i} <- Enum.with_index(@snippets) do %>
-    <div class='snippet-area-container' style="order:<%=i%>;">
-      <textarea class="snippet-area" language="<%=snippet.language%>" snippet="<%=snippet.snippet%>"></textarea>
-    </div>
-  <% end %>
+<input type="text" id="search-box"></input>
+<div class='showcase-container'>
+  <div class="side-menu" id="snippet-index-side-menu">
+  </div>
+  <div class='snippet-container' id='snippet-container'>
+    <%= render CodesioWeb.SnippetView, "snippets.html", snippets: @snippets, endpoint: @conn %>
+  </div>
 </div>
 
 <span id="common-js" data-main="<%= static_path(@conn, "/js/app.js") %>" />
 
-      <%# <td class="text-right"> %>
-      <%#   <span><%= link "Show", to: snippet_path(@conn, :show, snippet), class: "btn btn-default btn-xs" %1></span> %>
-      <%#   <span><%= link "Edit", to: snippet_path(@conn, :edit, snippet), class: "btn btn-default btn-xs" %1></span> %>
-      <%#   <span><%= link "Delete", to: snippet_path(@conn, :delete, snippet), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %1></span> %>
-      <%# </td> %>

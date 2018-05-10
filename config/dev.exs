@@ -13,7 +13,11 @@ config :codesio, CodesioWeb.Endpoint,
   check_origin: false,
   watchers: [node: ["node_modules/brunch/bin/brunch", "watch", "--stdin",
                     cd: Path.expand("../assets", __DIR__)]]
+config :elastix,
+  shield: true
 
+config :elastix,
+  httpoison_options: [hackney: [pool: :elastix_pool]]
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed

@@ -6,9 +6,9 @@ defmodule Codesio.AccountsTest do
   describe "users" do
     alias Codesio.Accounts.User
 
-    @valid_attrs %{email: "some email", name: "some name", username: "some username"}
-    @update_attrs %{email: "some updated email", name: "some updated name", username: "some updated username"}
-    @invalid_attrs %{email: nil, name: nil, username: nil}
+    @valid_attrs %{email: "some@email", name: "some name", username: "some username", password: "1234"}
+    @update_attrs %{email: "someupdated@email", name: "some updated name", username: "some updated username", password: "12345", current_password: "1234"}
+    @invalid_attrs %{email: nil, name: nil, username: nil, password: nil}
 
     def user_fixture(attrs \\ %{}) do
       {:ok, user} =
@@ -31,9 +31,10 @@ defmodule Codesio.AccountsTest do
 
     test "create_user/1 with valid data creates a user" do
       assert {:ok, %User{} = user} = Accounts.create_user(@valid_attrs)
-      assert user.email == "some email"
+      assert user.email == "some@email"
       assert user.name == "some name"
       assert user.username == "some username"
+      assert user.password_hash != nil
     end
 
     test "create_user/1 with invalid data returns error changeset" do
@@ -44,9 +45,10 @@ defmodule Codesio.AccountsTest do
       user = user_fixture()
       assert {:ok, user} = Accounts.update_user(user, @update_attrs)
       assert %User{} = user
-      assert user.email == "some updated email"
+      assert user.email == "someupdated@email"
       assert user.name == "some updated name"
       assert user.username == "some updated username"
+      assert user.password == "12345"
     end
 
     test "update_user/2 with invalid data returns error changeset" do

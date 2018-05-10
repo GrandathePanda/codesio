@@ -89,6 +89,12 @@ defmodule Codesio.SnippetsDisplay do
     Repo.delete(snippet)
   end
 
+  def batch_list(ids) do
+    query = from s in Snippet,
+            where: s.id in ^ids
+    Repo.all(query)
+  end
+
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking snippet changes.
 

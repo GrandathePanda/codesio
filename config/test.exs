@@ -4,8 +4,13 @@ use Mix.Config
 # you can enable the server option below.
 config :codesio, CodesioWeb.Endpoint,
   http: [port: 4001],
-  server: false
+  server: false,
+  debug_errors: false
 
+config :elastix,
+  shield: true
+config :elastix,
+  httpoison_options: [hackney: [pool: :elastix_pool]]
 # Print only warnings and errors during test
 config :logger, level: :warn
 

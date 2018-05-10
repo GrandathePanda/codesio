@@ -1,8 +1,10 @@
 <h2>Show Snippet</h2>
 
-<ul>
-
-</ul>
+<div>
+  <textarea id="snippet-area" class="snippet-area" language="<%=@snippet.language%>" snippet="<%=@snippet.snippet%>"></textarea>
+</div>
+<h3><%=@snippet.language%></h3>
 
 <span><%= link "Edit", to: snippet_path(@conn, :edit, @snippet) %></span>
 <span><%= link "Back", to: snippet_path(@conn, :index) %></span>
+<span id="common-js" data-main="<%= static_path(@conn, "/js/app.js") %>" />

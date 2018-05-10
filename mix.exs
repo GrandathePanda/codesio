@@ -20,7 +20,7 @@ defmodule Codesio.Mixfile do
   def application do
     [
       mod: {Codesio.Application, []},
-      extra_applications: [:logger, :runtime_tools, :coherence]
+      extra_applications: [:logger, :runtime_tools, :coherence, :elastix],
     ]
   end
 
@@ -42,7 +42,8 @@ defmodule Codesio.Mixfile do
       {:gettext, "~> 0.13.1"},
       {:cowboy, "~> 1.0"},
       {:coherence, "~> 0.5"},
-      {:ecto_enum, "~> 1.0"}
+      {:ecto_enum, "~> 1.0"},
+      {:elastix, ">= 0.0.0"}
     ]
   end
 

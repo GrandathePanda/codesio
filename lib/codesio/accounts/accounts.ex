@@ -50,9 +50,16 @@ defmodule Codesio.Accounts do
 
   """
   def create_user(attrs \\ %{}) do
-    %User{}
+    user = %User{}
     |> User.changeset(attrs)
     |> Repo.insert()
+    #Coherence, the auth library, strips the password so while insert() returns the struct we supplied
+    #the underlying record will never have the password so it could cause confusion so I make the
+    #returned struct match the underlying data
+    cond do
+      elem(user, 0) == :ok -> { :ok, %User{ elem(user, 1) | password: nil } }
+      true -> user
+    end
   end
 
   @doc """

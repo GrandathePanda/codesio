@@ -42,6 +42,7 @@ defmodule CodesioWeb.Router do
 
   scope "/", CodesioWeb do
     pipe_through :protected
+    get "/users", UserController, :index
     get "/users/show", UserController, :show
     resources "/snippets", SnippetController, except: [:index]
   end

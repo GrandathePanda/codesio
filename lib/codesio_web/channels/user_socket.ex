@@ -2,7 +2,7 @@ defmodule CodesioWeb.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", CodesioWeb.RoomChannel
+  channel "search:*", CodesioWeb.SearchChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

@@ -6,9 +6,9 @@ defmodule Codesio.SnippetsDisplayTest do
   describe "snippets" do
     alias Codesio.SnippetsDisplay.Snippet
 
-    @valid_attrs %{}
-    @update_attrs %{}
-    @invalid_attrs %{}
+    @valid_attrs %{ snippet: "def example_snippet():\n\tprint('example')", tags: ["example code", "test"], language: "python" }
+    @update_attrs %{ snippet: "def example_snippet(x):\n\tprint(x)", tags: ["test"], language: "python" }
+    @invalid_attrs %{ snippet: nil, tags: nil, language: nil }
 
     def snippet_fixture(attrs \\ %{}) do
       {:ok, snippet} =
@@ -35,6 +35,7 @@ defmodule Codesio.SnippetsDisplayTest do
 
     test "create_snippet/1 with invalid data returns error changeset" do
       assert {:error, %Ecto.Changeset{}} = SnippetsDisplay.create_snippet(@invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} = SnippetsDisplay.create_snippet(%{ @invalid_attrs | tags: 1 })
     end
 
     test "update_snippet/2 with valid data updates the snippet" do

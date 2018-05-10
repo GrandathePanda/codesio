@@ -16,4 +16,10 @@ defmodule Codesio.SnippetsDisplay.Snippet do
     |> cast(attrs, [:snippet, :tags, :language])
     |> validate_required([:snippet, :tags, :language])
   end
+  @doc false
+  def changeset(attrs) do
+    %{}
+    |> cast(attrs, [:snippet, :tags, :language])
+    |> validate_required([:snippet, :tags, :language])
+  end
 end
