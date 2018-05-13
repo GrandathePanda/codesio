@@ -16,11 +16,11 @@ ML I will implement an auto tagger. If I continue doing this past the two weeks 
  - Account creation and login
  - Realtime search for snippets using elasticsearch and phoenix channels + websockets
  - Adding, editing, deleting, inspecting Snippets
+ - filters/sorts (language, time)
+ - Rating snippets, sorting by highest rated
 
 ## Features to be finished shortly:
- - Rating snippets, sorting by highest rated
  - All the UI styling
- - filters (language, time)
  - list of all snippets submitted by a user
 
 To start your Phoenix server:
