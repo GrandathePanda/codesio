@@ -3,6 +3,33 @@
 <input type="text" id="search-box"></input>
 <div class='showcase-container'>
   <div class="side-menu" id="snippet-index-side-menu">
+    <h3>Filters</h3>
+    <div class="filter-block" id="rating-block">
+    <label for="rating-filter">Rating</label>
+    <input type="radio" name="rating-filter" value="0">0</input>
+    <input type="radio" name="rating-filter" value="1">1</input>
+    <input type="radio" name="rating-filter" value="2">2</input>
+    <input type="radio" name="rating-filter" value="3">3</input>
+    <input type="radio" name="rating-filter" value="4">4</input>
+    <input type="radio" name="rating-filter" value="5">5</input>
+    </div>
+    <div class="filter-block" id="language-block">
+    <label for="language-filter">Language</label>
+        <%= select nil, :language, ["All"]++@languages, id: "language-filter-selector", name: 'language-filter'%>
+    </div>
+    <h3>Sorts</h3>
+    <div class="sort-block" id="sort-block">
+      <label for="sort-suite-selector">Type: </label>
+      <select name="sort-suite-selector">
+        <option value="Age">Age</option>
+      </select>
+      <div class="sort-sub-block" id="sorting-sub-block-age">
+      <select name="age-sort">
+        <option value="Newest">Newest</option>
+        <option value="Oldest">Oldest</option>
+      </select>
+      </div>
+    </div>
   </div>
   <div class='snippet-container' id='snippet-container'>
     <%= render CodesioWeb.SnippetView, "snippets.html", snippets: @snippets, endpoint: @conn %>

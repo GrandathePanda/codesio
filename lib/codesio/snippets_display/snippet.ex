@@ -7,6 +7,7 @@ defmodule Codesio.SnippetsDisplay.Snippet do
     field :snippet, :string
     field :tags, { :array, :string }
     field :language, :string
+    field :rating, :integer, default: 0
     timestamps()
   end
 

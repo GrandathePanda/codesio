@@ -5,7 +5,7 @@ defmodule CodesioWeb.SnippetController do
   alias CodesioHelpers.ElasticsearchHelper
   def index(conn, _params) do
     snippets = SnippetsDisplay.list_snippets()
-    render(conn, "index.html", layout: {CodesioWeb.LayoutView, "snippet_index.html"}, snippets: snippets)
+    render(conn, "index.html", layout: {CodesioWeb.LayoutView, "snippet_index.html"}, snippets: snippets, languages: CodesioWeb.get_supported_languages())
   end
 
   def new(conn, _params) do
