@@ -2,10 +2,12 @@ import mainView from './main'
 import SnippetNewView from './snippet/new'
 import SnippetIndexView from './snippet/index'
 import SnippetShowView from './snippet/show'
+import SnippetEditView from './snippet/edit'
 const views = {
     SnippetNewView,
     SnippetIndexView,
-    SnippetShowView
+    SnippetShowView,
+    SnippetEditView
 }
 
 export default (viewName) => {

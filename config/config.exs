@@ -29,6 +29,7 @@ import_config "#{Mix.env}.secret.exs"
 # %% Coherence Configuration %%   Don't remove this line
 config :coherence,
   user_schema: Codesio.Accounts.User,
+  user_token: true,
   repo: Codesio.Repo,
   module: Codesio,
   web_module: CodesioWeb,

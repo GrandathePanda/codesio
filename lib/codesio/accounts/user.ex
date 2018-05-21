@@ -6,6 +6,7 @@ defmodule Codesio.Accounts.User do
     field :email, :string
     field :name, :string
     field :username, :string
+    has_many :votes, Codesio.Vote
     coherence_schema()
     timestamps()
   end

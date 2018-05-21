@@ -5,9 +5,10 @@ defmodule Codesio.SnippetsDisplay.Snippet do
 
   schema "snippets" do
     field :snippet, :string
-    field :tags, { :array, :string }
+    field :tags, Codesio.Tags
     field :language, :string
-    field :rating, :integer, default: 0
+    field :rating, :float, default: 0
+    has_many :votes, Codesio.Vote
     timestamps()
   end
 

@@ -4,10 +4,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>Hello Codesio!</title>
+    <meta name="description" content="Think of Snippy as an instagram for code snippets. Submit snippets, vote on them and 
+    find the snippets most useful for what you are working on.">
+    <meta name="author" content="Ian T Butler">
+    <meta name="user-token" content="<%= assigns[:user_token] %>">
+    <title>It looks like you're trying to find some code.</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
@@ -17,6 +18,9 @@
         <nav role="navigation">
           <ul class="nav nav-pills pull-right">
             <li><a href="http://www.phoenixframework.org/docs">Donate</a></li>
+            <%= if Coherence.current_user_name(@conn) == nil do %>
+              <li><a href="/sessions/new">Login</a></li>
+            <% end %>
           </ul>
         </nav>
         <span class="logo"></span>

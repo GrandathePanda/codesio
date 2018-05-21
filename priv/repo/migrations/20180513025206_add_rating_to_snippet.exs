@@ -3,7 +3,7 @@ defmodule Codesio.Repo.Migrations.AddRatingToSnippet do
 
   def change do
     alter table(:snippets) do
-      add :rating, :integer, default: 0
+      add :rating, :float, default: 0
     end
   end
 

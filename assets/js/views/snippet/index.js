@@ -13,8 +13,8 @@ export default () => {
             })
 
             channel.join()
-                .receive("ok", resp => { console.log("Joined successfully", resp) })
-                .receive("error", resp => { console.log("Unable to join", resp) })
+                .receive("ok", resp => { console.log("Joined Searches successfully", resp) })
+                .receive("error", resp => { console.log("Unable to join Searches", resp) })
             channel.on("new_search", ({html}) => {
                 const container = document.getElementById("snippet-container")
                 container.innerHTML = html
@@ -22,6 +22,28 @@ export default () => {
                 this.setUpShuffle()
             })
             this.channels["search"] = channel
+        },
+        setUpRatingChannel: function() {
+            const userToken = document.getElementsByName("user-token")[0].getAttribute("content")
+            if(!userToken) {
+                return
+            }
+            let channel = this.socket.channel("rating:*", {})
+            document.body.addEventListener("click", (event) => {
+                if(event.target.classList.contains('up-vote')) {
+                    channel.push("upvote", {body: event.target.getAttribute("snippetid")})
+                    event.target.src = "/images/curly-bracket-up-active.svg"
+                    event.target.nextSibling.src = "/images/curly-bracket-down.svg"
+                } else if(event.target.classList.contains('down-vote')) {
+                    channel.push("downvote", {body: event.target.getAttribute("snippetid")})
+                    event.target.src = "/images/curly-bracket-down-active.svg"
+                    event.target.previousSibling.src = "/images/curly-bracket-up.svg"
+                }
+            })
+            channel.join()
+                .receive("ok", resp => { console.log("Joined Ratings successfully", resp) })
+                .receive("error", resp => { console.log("Unable to join Ratings", resp) })
+            this.channels["rating"] = channel
         },
         setUpShuffle: function() {
             const snippetContainer = document.getElementById('snippet-container')
@@ -79,12 +101,17 @@ export default () => {
             }
         },
         mount: function() {
-            this.socket = new Socket("/socket", {params: {token: window.userToken}})
+            main.mount()
+            const userToken = document.getElementsByName("user-token")[0].getAttribute("content")
+            this.socket = new Socket("/socket", {params: {}})
+            if(userToken) {
+                this.socket = new Socket("/socket", {params: {token: userToken}})
+            }
             this.socket.connect()
             this.channels = {}
-            main.mount()
             this.displayCodeMirrors()
             this.setUpSearchChannel()
+            this.setUpRatingChannel()
             this.setUpShuffle()
             this.setUpFilters()
         },

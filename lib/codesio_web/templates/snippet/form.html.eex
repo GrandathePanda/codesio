@@ -7,7 +7,6 @@
   <div class="form-group">
     <%= label f, :snippet, class: "control-label" %>
     <%= textarea f, :snippet, class: "form-control snippet-editor" %>
-    <%= error_tag f, :snippet %>
   </div>
   <div class="form-group">
     <%= label f, :tags, class: "control-label" %>

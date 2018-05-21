@@ -3,6 +3,7 @@ defmodule CodesioWeb.UserSocket do
 
   ## Channels
   channel "search:*", CodesioWeb.SearchChannel
+  channel "rating:*", CodesioWeb.RatingChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
@@ -19,6 +20,12 @@ defmodule CodesioWeb.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
+  def connect(%{"token" => token}, socket) do
+    case Coherence.verify_user_token(socket, token, &assign/3) do
+      {:error, _} -> :error
+      {:ok, socket} -> {:ok, socket}
+    end
+  end
   def connect(_params, socket) do
     {:ok, socket}
   end
