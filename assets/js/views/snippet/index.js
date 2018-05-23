@@ -30,19 +30,38 @@ export default () => {
             }
             let channel = this.socket.channel("rating:*", {})
             document.body.addEventListener("click", (event) => {
-                if(event.target.classList.contains('up-vote')) {
-                    channel.push("upvote", {body: event.target.getAttribute("snippetid")})
-                    event.target.src = "/images/curly-bracket-up-active.svg"
-                    event.target.nextSibling.src = "/images/curly-bracket-down.svg"
-                } else if(event.target.classList.contains('down-vote')) {
-                    channel.push("downvote", {body: event.target.getAttribute("snippetid")})
-                    event.target.src = "/images/curly-bracket-down-active.svg"
-                    event.target.previousSibling.src = "/images/curly-bracket-up.svg"
+                if(event.target.classList.contains("vote")) {
+                    if(!event.target.classList.contains("active")) {
+                        if(event.target.classList.contains('up-vote')) {
+                            channel.push("upvote", {body: event.target.getAttribute("snippetid")})
+                            event.target.src = "/images/curly-bracket-up-active.svg"
+                            event.target.classList.add("active")
+                            event.target.nextSibling.src = "/images/curly-bracket-down.svg"
+                            event.target.nextSibling.classList.remove("active")
+                        } else if(event.target.classList.contains('down-vote')) {
+                            channel.push("downvote", {body: event.target.getAttribute("snippetid")})
+                            event.target.src = "/images/curly-bracket-down-active.svg"
+                            event.target.classList.add("active")
+                            event.target.previousSibling.src = "/images/curly-bracket-up.svg"
+                            event.target.previousSibling.classList.remove("active")
+                        }
+                    } else {
+                        channel.push('unvote', {body: event.target.getAttribute("snippetid")})
+                        let src = event.target.src.split('-')
+                        src.pop()
+                        event.target.src = src.join('-') + '.svg'
+                        event.target.classList.remove('active')
+                    }
                 }
             })
             channel.join()
                 .receive("ok", resp => { console.log("Joined Ratings successfully", resp) })
                 .receive("error", resp => { console.log("Unable to join Ratings", resp) })
+            channel.on("rating_change", payload => {
+                const rating = (payload.rating).toFixed(1)
+                document.getElementById(payload.snippet_id).setAttribute("rating", rating)
+                document.getElementById("rating-"+payload.snippet_id).innerText = rating
+            })
             this.channels["rating"] = channel
         },
         setUpShuffle: function() {

@@ -8,6 +8,7 @@ defmodule Codesio.SnippetsDisplay.Snippet do
     field :tags, Codesio.Tags
     field :language, :string
     field :rating, :float, default: 0
+    belongs_to :user, Codesio.Accounts.User
     has_many :votes, Codesio.Vote
     timestamps()
   end

@@ -7,6 +7,7 @@ defmodule Codesio.SnippetsDisplay do
   alias Codesio.Repo
 
   alias Codesio.SnippetsDisplay.Snippet
+  alias Codesio.Vote
 
   @doc """
   Returns the list of snippets.
@@ -19,6 +20,13 @@ defmodule Codesio.SnippetsDisplay do
   """
   def list_snippets do
     Repo.all(Snippet)
+  end
+
+  def list_snippets_with_votes(user_id) do
+    query = from s in Snippet,
+      left_join: v in Vote, on: [snippet_id: s.id, user_id: ^user_id],
+      preload: [votes: v]
+    Repo.all(query)
   end
 
   @doc """

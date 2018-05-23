@@ -20,6 +20,8 @@
             <li><a href="http://www.phoenixframework.org/docs">Donate</a></li>
             <%= if Coherence.current_user_name(@conn) == nil do %>
               <li><a href="/sessions/new">Login</a></li>
+            <% else %>
+              <li><%= CodesioWeb.Coherence.ViewHelpers.signout_link(@conn, "Sign out") %></li>
             <% end %>
           </ul>
         </nav>

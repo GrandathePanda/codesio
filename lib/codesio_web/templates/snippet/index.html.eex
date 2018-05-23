@@ -32,7 +32,7 @@
     </div>
   </div>
   <div class='snippet-container' id='snippet-container'>
-    <%= render CodesioWeb.SnippetView, "snippets.html", snippets: @snippets, endpoint: @conn %>
+    <%= render CodesioWeb.SnippetView, "snippets.html", snippets: @snippets, endpoint: @conn, user_id: @user_id %>
   </div>
 </div>
 

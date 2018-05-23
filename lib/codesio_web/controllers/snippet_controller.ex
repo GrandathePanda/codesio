@@ -2,10 +2,18 @@ defmodule CodesioWeb.SnippetController do
   use CodesioWeb, :controller
   alias Codesio.SnippetsDisplay
   alias Codesio.SnippetsDisplay.Snippet
+  alias Codesio.Accounts.User
   alias CodesioHelpers.ElasticsearchHelper
   def index(conn, _params) do
-    snippets = SnippetsDisplay.list_snippets()
-    render(conn, "index.html", layout: {CodesioWeb.LayoutView, "snippet_index.html"}, snippets: snippets, languages: CodesioWeb.get_supported_languages())
+    snippets = cond do
+      !is_nil(conn.assigns[:current_user]) -> SnippetsDisplay.list_snippets_with_votes(conn.assigns[:current_user].id)
+      true -> SnippetsDisplay.list_snippets()
+    end
+    user_id = case conn.assigns[:current_user] do
+      nil -> nil
+      %User{} -> conn.assigns[:current_user].id
+    end
+    render(conn, "index.html", layout: {CodesioWeb.LayoutView, "snippet_index.html"}, snippets: snippets, languages: CodesioWeb.get_supported_languages(), user_id: user_id)
   end
 
   def new(conn, _params) do
@@ -39,8 +47,14 @@ defmodule CodesioWeb.SnippetController do
 
   def edit(conn, %{"id" => id}) do
     snippet = SnippetsDisplay.get_snippet!(id)
-    changeset = SnippetsDisplay.change_snippet(snippet)
-    render(conn, "edit.html", snippet: snippet, changeset: changeset, languages: CodesioWeb.get_supported_languages())
+    if conn.assigns[:current_user].id != snippet.user_id do
+      conn
+      |> put_flash(:error, "Can only edit snippets you created.")
+      |> redirect(to: snippet_path(conn, :index))
+    else
+      changeset = SnippetsDisplay.change_snippet(snippet)
+      render(conn, "edit.html", snippet: snippet, changeset: changeset, languages: CodesioWeb.get_supported_languages())
+    end
   end
   defp persist_changes(snippet, snippet_params, conn) do
     case SnippetsDisplay.update_snippet(snippet, snippet_params) do
@@ -64,10 +78,16 @@ defmodule CodesioWeb.SnippetController do
 
   def delete(conn, %{"id" => id}) do
     snippet = SnippetsDisplay.get_snippet!(id)
-    {:ok, _snippet} = SnippetsDisplay.delete_snippet(snippet)
+    if conn.assigns[:current_user].id != snippet.user_id do
+      conn
+      |> put_flash(:error, "Can only delete snippets you have created.")
+      |> redirect(to: snippet_path(conn, :index))
+    else
+      {:ok, _snippet} = SnippetsDisplay.delete_snippet(snippet)
 
-    conn
-    |> put_flash(:info, "Snippet deleted successfully.")
-    |> redirect(to: snippet_path(conn, :index))
+      conn
+      |> put_flash(:info, "Snippet deleted successfully.")
+      |> redirect(to: snippet_path(conn, :index))
+    end
   end
 end
