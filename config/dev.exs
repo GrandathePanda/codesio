@@ -59,5 +59,5 @@ config :codesio, Codesio.Repo,
   username: "postgres",
   password: "postgres",
   database: "codesio_dev",
-  hostname: "localhost",
-  pool_size: 10
+hostname: "localhost",
+pool_size: 10

@@ -14,6 +14,7 @@ defmodule Codesio.Application do
       supervisor(CodesioWeb.Endpoint, []),
       # Start your own worker by calling: Codesio.Worker.start_link(arg1, arg2, arg3)
       # worker(Codesio.Worker, [arg1, arg2, arg3]),
+      worker(CodesioHelpers.IpBanHelper.ActiveBansAgent, [])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

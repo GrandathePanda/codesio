@@ -35,7 +35,7 @@ defmodule Codesio.Mixfile do
     [
       {:phoenix, "~> 1.3.2"},
       {:phoenix_pubsub, "~> 1.0"},
-      {:phoenix_ecto, "~> 3.2"},
+      {:phoenix_ecto, "~> 3.3"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 2.10"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
@@ -43,7 +43,12 @@ defmodule Codesio.Mixfile do
       {:cowboy, "~> 1.0"},
       {:coherence, "~> 0.5"},
       {:ecto_enum, "~> 1.0"},
-      {:elastix, ">= 0.0.0"}
+      {:elastix, ">= 0.0.0"},
+      {:torch, "~> 2.0.0-rc.1"},
+      {:plug_attack, "~> 0.3.0"},
+      {:ip2country, "~> 1.1"},
+      {:remote_ip, "~> 0.1.4"},
+      {:policy_wonk, "~> 1.0.0-rc.0"}
     ]
   end
 

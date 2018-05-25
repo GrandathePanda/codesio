@@ -47,7 +47,7 @@ defmodule CodesioWeb.SnippetController do
 
   def edit(conn, %{"id" => id}) do
     snippet = SnippetsDisplay.get_snippet!(id)
-    if conn.assigns[:current_user].id != snippet.user_id do
+    if CodesioHelpers.AuthorizationServices.Policies.authorized?(conn, {:is_snippet_owner, snippet.user_id}) do
       conn
       |> put_flash(:error, "Can only edit snippets you created.")
       |> redirect(to: snippet_path(conn, :index))
@@ -78,7 +78,7 @@ defmodule CodesioWeb.SnippetController do
 
   def delete(conn, %{"id" => id}) do
     snippet = SnippetsDisplay.get_snippet!(id)
-    if conn.assigns[:current_user].id != snippet.user_id do
+    if CodesioHelpers.AuthorizationServices.Policies.authorized?(conn, {:is_snippet_owner, snippet.user_id}) do
       conn
       |> put_flash(:error, "Can only delete snippets you have created.")
       |> redirect(to: snippet_path(conn, :index))

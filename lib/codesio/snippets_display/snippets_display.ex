@@ -9,6 +9,57 @@ defmodule Codesio.SnippetsDisplay do
   alias Codesio.SnippetsDisplay.Snippet
   alias Codesio.Vote
 
+  import Torch.Helpers, only: [sort: 1, paginate: 4]
+  import Filtrex.Type.Config
+
+  @pagination [page_size: 15]
+  @pagination_distance 5
+
+  @doc """
+  Paginate the list of paginates using filtrex
+  filters.
+
+  ## Examples
+
+      iex> list_snippets(%{})
+      %{paginates: [%Paginate{}], ...}
+  """
+  @spec paginate_snippets(map) :: {:ok, map} | {:error, any}
+  def paginate_snippets(params \\ %{}) do
+    params =
+      params
+      |> Map.put_new("sort_direction", "desc")
+      |> Map.put_new("sort_field", "inserted_at")
+
+    {:ok, sort_direction} = Map.fetch(params, "sort_direction")
+    {:ok, sort_field} = Map.fetch(params, "sort_field")
+
+    with {:ok, filter} <- Filtrex.parse_params(filter_config(:paginates), params["paginate"] || %{}),
+         %Scrivener.Page{} = page <- do_paginate_snippets(filter, params) do
+      {:ok,
+        %{
+          snippets: page.entries,
+          page_number: page.page_number,
+          page_size: page.page_size,
+          total_pages: page.total_pages,
+          total_entries: page.total_entries,
+          distance: @pagination_distance,
+          sort_field: sort_field,
+          sort_direction: sort_direction
+        }
+      }
+    else
+      {:error, error} -> {:error, error}
+      error -> {:error, error}
+    end
+  end
+
+  defp do_paginate_snippets(filter, params) do
+    Snippet
+    |> Filtrex.query(filter)
+    |> order_by(^sort(params))
+    |> paginate(Repo, params, @pagination)
+  end
   @doc """
   Returns the list of snippets.
 
@@ -114,5 +165,11 @@ defmodule Codesio.SnippetsDisplay do
   """
   def change_snippet(%Snippet{} = snippet) do
     Snippet.changeset(snippet, %{})
+  end
+
+  defp filter_config(:paginates) do
+    defconfig do
+
+    end
   end
 end

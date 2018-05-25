@@ -1,0 +1,14 @@
+<section id="torch-toolbar">
+  <div class="torch-container">
+    <%= link "Cancel", to: admin_banned_ip_path(@conn, :index), class: "torch-button" %>
+  </div>
+</section>
+
+<section id="torch-header-and-content">
+  <div class="torch-container">
+    <div class="header">
+      <h3>New Banned ip</h3>
+    </div>
+    <%= render "form.html", Map.put(assigns, :action, admin_banned_ip_path(@conn, :create)) %>
+  </div>
+</section>

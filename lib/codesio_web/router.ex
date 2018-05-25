@@ -2,24 +2,33 @@ defmodule CodesioWeb.Router do
   use CodesioWeb, :router
   use Coherence.Router
 
-  pipeline :browser do
+  pipeline :always do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+  end
+
+  pipeline :api do
+    plug :accepts, ["json"]
+  end
+  pipeline :authorization do
+
+  end
+  pipeline :admin do
+    plug CodesioHelpers.AuthorizationServices.Policies, :admin
+  end
+
+  pipeline :browser do
     plug Coherence.Authentication.Session
   end
 
   pipeline :protected do
-    plug :accepts, ["html"]
-    plug :fetch_session
-    plug :fetch_flash
-    plug :protect_from_forgery
-    plug :put_secure_browser_headers
     plug Coherence.Authentication.Session, protected: true
     plug :put_user_token
   end
+
   defp put_user_token(conn, _) do
     if current_user = conn.assigns[:current_user] do
       token = Phoenix.Token.sign(conn, "user socket", current_user.id)
@@ -28,28 +37,38 @@ defmodule CodesioWeb.Router do
       conn
     end
   end
-  pipeline :api do
-    plug :accepts, ["json"]
-  end
 
   scope "/" do
+    pipe_through :always
     pipe_through :browser
     coherence_routes()
   end
 
   scope "/" do
+    pipe_through :always
     pipe_through :protected
+    pipe_through :authorization
     coherence_routes :protected
   end
 
   scope "/", CodesioWeb do
+    pipe_through :always
     pipe_through :browser # Use the default browser stack
     get "/", SnippetController, :index
     get "/snippets", SnippetController, :index
   end
-
-  scope "/", CodesioWeb do
+  scope "/admin", CodesioWeb.Admin, as: :admin do
+    pipe_through :always
     pipe_through :protected
+    pipe_through :authorization
+    pipe_through :admin
+    resources "/snippets", SnippetController
+    resources "/banned_ips", BannedIpController
+  end
+  scope "/", CodesioWeb do
+    pipe_through :always
+    pipe_through :protected
+    pipe_through :authorization
     get "/users", UserController, :index
     get "/users/show", UserController, :show
     resources "/snippets", SnippetController, except: [:index]

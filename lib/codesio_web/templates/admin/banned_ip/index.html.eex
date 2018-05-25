@@ -1,0 +1,44 @@
+<section id="torch-toolbar">
+  <div class="torch-container">
+    <%= link "New Banned ip", to: admin_banned_ip_path(@conn, :new) %>
+  </div>
+</section>
+<section id="torch-index-content">
+  <div class="torch-container">
+    <section id="torch-filters">
+      <h3>Find Banned ips</h3>
+      <%= form_tag @conn.request_path, method: :get, id: "torch-filters-form" do %>
+        <button type="submit" class="torch-button">Search</button>
+        <%= link "Clear Filters", to: admin_banned_ip_path(@conn, :index) %>
+      <% end %>
+
+    </section>
+
+    <section id="torch-table">
+      <%= if length(@banned_ips) > 0 do %>
+      <table>
+        <thead>
+          <tr>
+              <th><%= table_link(@conn, "Ip", :ip) %></th>
+            <th><span>Actions</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= for banned_ip <- @banned_ips do %>
+            <tr>
+                <td><%= banned_ip.ip %></td>
+              <td class="torch-actions">
+                <span><%= link "Edit", to: admin_banned_ip_path(@conn, :edit, banned_ip) %></span>
+                <span><%= link "Delete", to: admin_banned_ip_path(@conn, :delete, banned_ip), method: :delete, data: [confirm: "Are you sure?"] %></span>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <%= render Torch.PaginationView, "_pagination.html", assigns %>
+    <% else %>
+      <p class="torch-no-data">No Banned ips match your search.</p>
+    <% end %>
+    </section>
+  </div>
+</section>

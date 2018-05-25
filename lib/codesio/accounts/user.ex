@@ -6,6 +6,7 @@ defmodule Codesio.Accounts.User do
     field :email, :string
     field :name, :string
     field :username, :string
+    field :role, UserRoleEnum
     has_many :votes, Codesio.Vote
     coherence_schema()
     timestamps()
@@ -14,8 +15,8 @@ defmodule Codesio.Accounts.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:name, :username, :email] ++ coherence_fields)
-    |> validate_required([:name, :username, :email])
+    |> cast(attrs, [:name, :username, :email, :role] ++ coherence_fields)
+    |> validate_required([:name, :username, :email, :role])
     |> unique_constraint(:username)
     |> unique_constraint(:email)
     |> validate_format(:email,~r/@/)
