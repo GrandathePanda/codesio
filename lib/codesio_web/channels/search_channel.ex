@@ -11,7 +11,7 @@ defmodule CodesioWeb.SearchChannel do
   end
   def handle_in("new_search", %{"body" => ""}, socket) do
     snippets = SnippetsDisplay.list_snippets()
-    html = View.render_to_string SnippetView, "snippets.html", snippets: snippets, endpoint: Endpoint
+    html = View.render_to_string SnippetView, "snippets.html", snippets: snippets, endpoint: Endpoint, user_id: socket.assigns[:user_id]
     push socket, "new_search", %{html: html}
     {:reply, :ok, socket}
   end
@@ -30,7 +30,7 @@ defmodule CodesioWeb.SearchChannel do
                      id
                    end)
         snippets = SnippetsDisplay.batch_list(snippet_ids)
-        html = View.render_to_string SnippetView, "snippets.html", snippets: snippets, endpoint: Endpoint
+        html = View.render_to_string SnippetView, "snippets.html", snippets: snippets, endpoint: Endpoint, user_id: socket.assigns[:user_id]
         push socket, "new_search", %{html: html}
         {:reply, :ok, socket}
       _ -> {:reply, :error, socket}
