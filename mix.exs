@@ -20,7 +20,7 @@ defmodule Codesio.Mixfile do
   def application do
     [
       mod: {Codesio.Application, []},
-      extra_applications: [:logger, :runtime_tools, :coherence, :elastix],
+      extra_applications: [:logger, :runtime_tools, :coherence, :elastix, :scrivener_ecto],
     ]
   end
 
@@ -48,7 +48,8 @@ defmodule Codesio.Mixfile do
       {:plug_attack, "~> 0.3.0"},
       {:ip2country, "~> 1.1"},
       {:remote_ip, "~> 0.1.4"},
-      {:policy_wonk, "~> 1.0.0-rc.0"}
+      {:policy_wonk, "~> 1.0.0-rc.0"},
+      {:scrivener_ecto, "~> 1.0"}
     ]
   end
 
