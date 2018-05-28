@@ -8,13 +8,29 @@ defmodule Codesio.SnippetsDisplay do
 
   alias Codesio.SnippetsDisplay.Snippet
   alias Codesio.Vote
-
-  import Torch.Helpers, only: [sort: 1, paginate: 4]
   import Filtrex.Type.Config
 
-  @pagination [page_size: 15]
-  @pagination_distance 5
+  def sort(params)
 
+  def sort(%{"sort_field" => field, "sort_direction" => direction}) do
+    {String.to_atom(direction), String.to_atom(field)}
+  end
+
+  def sort(_other) do
+    {:asc, :id}
+  end
+
+  def paginate_snippets(params, assigns) do
+    user_id = cond do
+      assigns[:current_user] != nil -> assigns[:current_user].id
+      assigns[:user_id] != nil -> assigns[:user_id]
+      true -> nil
+    end
+    case user_id do
+      nil -> paginate_snippets(params)
+      _ -> paginate_snippets(Map.put(params, "user_id", user_id))
+    end
+  end
   @doc """
   Paginate the list of paginates using filtrex
   filters.
@@ -31,34 +47,57 @@ defmodule Codesio.SnippetsDisplay do
       |> Map.put_new("sort_direction", "desc")
       |> Map.put_new("sort_field", "inserted_at")
 
-    {:ok, sort_direction} = Map.fetch(params, "sort_direction")
-    {:ok, sort_field} = Map.fetch(params, "sort_field")
-
     with {:ok, filter} <- Filtrex.parse_params(filter_config(:paginates), params["paginate"] || %{}),
          %Scrivener.Page{} = page <- do_paginate_snippets(filter, params) do
-      {:ok,
-        %{
-          snippets: page.entries,
-          page_number: page.page_number,
-          page_size: page.page_size,
-          total_pages: page.total_pages,
-          total_entries: page.total_entries,
-          distance: @pagination_distance,
-          sort_field: sort_field,
-          sort_direction: sort_direction
-        }
-      }
+        format_pagination_results(page, params)
     else
       {:error, error} -> {:error, error}
       error -> {:error, error}
     end
   end
-
+  defp do_paginate_snippets(filter, %{"user_id" => user_id } = params) do
+    query = from s in Snippet,
+      left_join: v in Vote, on: [snippet_id: s.id, user_id: ^user_id],
+      preload: [votes: v]
+    Filtrex.query(query, filter)
+    |> order_by(^sort(params))
+    |> Repo.paginate(params)
+  end
   defp do_paginate_snippets(filter, params) do
     Snippet
     |> Filtrex.query(filter)
     |> order_by(^sort(params))
-    |> paginate(Repo, params, @pagination)
+    |> Repo.paginate(params)
+  end
+  defp format_pagination_results(page, params) do
+      {:ok,
+        %{
+          snippets: page.entries,
+          user_id: params["user_id"],
+          page_number: page.page_number,
+          page_size: page.page_size,
+          total_pages: page.total_pages,
+          total_entries: page.total_entries,
+          sort_field: params["sort_field"],
+          sort_direction: params["sort_direction"]
+        }
+      }
+  end
+  def paginate_batch_list(ids, params, user_id) do
+    query = case user_id do
+      nil -> from s in Snippet,
+      where: s.id in ^ids
+      _ -> from s in Snippet,
+      where: s.id in ^ids,
+      left_join: v in Vote, on: [snippet_id: s.id, user_id: ^user_id],
+      preload: [votes: v]
+    end
+
+    page = Repo.paginate(query, params)
+    case page do
+      :error -> {:error, "Something went wrong."}
+      _ -> format_pagination_results(page, params)
+    end
   end
   @doc """
   Returns the list of snippets.

@@ -4,16 +4,21 @@ defmodule CodesioWeb.SnippetController do
   alias Codesio.SnippetsDisplay.Snippet
   alias Codesio.Accounts.User
   alias CodesioHelpers.ElasticsearchHelper
+  @paginate_params %{ "page_size" => 1 }
   def index(conn, _params) do
-    snippets = cond do
-      !is_nil(conn.assigns[:current_user]) -> SnippetsDisplay.list_snippets_with_votes(conn.assigns[:current_user].id)
-      true -> SnippetsDisplay.list_snippets()
-    end
     user_id = case conn.assigns[:current_user] do
       nil -> nil
       %User{} -> conn.assigns[:current_user].id
     end
-    render(conn, "index.html", layout: {CodesioWeb.LayoutView, "snippet_index.html"}, snippets: snippets, languages: CodesioWeb.get_supported_languages(), user_id: user_id)
+    {status, res} = SnippetsDisplay.paginate_snippets(@paginate_params, conn.assigns)
+    assigns = res
+              |> Map.put(:user_id, user_id)
+              |> Map.put(:languages, CodesioWeb.get_supported_languages())
+              |> Map.put(:layout, {CodesioWeb.LayoutView, "snippet_index.html"})
+    case status do
+      :ok -> render(conn, "index.html", assigns)
+      :error -> conn |> put_flash(:error, "Unable to load snippets.") |> redirect(to: snippet_path(conn, :index))
+    end
   end
 
   def new(conn, _params) do
