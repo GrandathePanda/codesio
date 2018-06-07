@@ -49,7 +49,8 @@ defmodule Codesio.Mixfile do
       {:ip2country, "~> 1.1"},
       {:remote_ip, "~> 0.1.4"},
       {:policy_wonk, "~> 1.0.0-rc.0"},
-      {:scrivener_ecto, "~> 1.0"}
+      {:scrivener_ecto, "~> 1.0"},
+      {:faker, "~> 0.10", only: [:test, :dev]}
     ]
   end
 

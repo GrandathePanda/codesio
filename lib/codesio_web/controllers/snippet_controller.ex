@@ -10,7 +10,7 @@ defmodule CodesioWeb.SnippetController do
       nil -> nil
       %User{} -> conn.assigns[:current_user].id
     end
-    {status, res} = SnippetsDisplay.paginate_snippets(@paginate_params, conn.assigns)
+    {status, res} = SnippetsDisplay.paginate_snippets(@paginate_params, user_id)
     assigns = res
               |> Map.put(:user_id, user_id)
               |> Map.put(:languages, CodesioWeb.get_supported_languages())

@@ -11,6 +11,7 @@
 //
 // If you no longer want to use a dependency, remember
 // to also remove its path from "config.paths.watched".
+require("babel-polyfill")
 import { moduleLoader } from './common.js'
 import loadView from './views/loader';
 import "phoenix_html"

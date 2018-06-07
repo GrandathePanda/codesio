@@ -5,22 +5,58 @@ import Shuffle from 'shufflejs'
 const main = mainView()
 export default () => {
     return {
-        setUpSearchChannel: function() {
+        setUpSearchChannel: async function() {
             let channel = this.socket.channel("search:*", {})
             let searchBar = document.getElementById("search-box")
-            searchBar.addEventListener("input", event => {
+            const searchBarListener = event => {
                 channel.push("new_search", {body: searchBar.value})
+            }
+            searchBar.addEventListener("input", searchBarListener)
+            await new Promise((resolve, reject) => {
+                channel.join()
+                    .receive("ok", resp => {
+                        console.log("Joined Searches successfully", resp)
+                        resolve(resp)
+                    })
+                    .receive("error", resp => {
+                        console.log("Unable to join Searches", resp)
+                        reject(resp)
+                    })
             })
-
-            channel.join()
-                .receive("ok", resp => { console.log("Joined Searches successfully", resp) })
-                .receive("error", resp => { console.log("Unable to join Searches", resp) })
+            const windowScrollListener = (event => {
+                if(this.stopPagination || !this.isMounted) {
+                    return
+                }
+                this.stopPagination = true
+                const search = document.getElementById("search-box").value
+                const pagination_config = {
+                    page: this.page + 1
+                }
+                channel.push("continued_search", {body: search, pagination_config})
+            }).bind(this)
+            window.addEventListener("wheel", windowScrollListener)
             channel.on("new_search", ({html}) => {
                 const container = document.getElementById("snippet-container")
                 container.innerHTML = html
                 this.displayCodeMirrors()
                 this.setUpShuffle()
+                this.page = 1
+                this.stopPagination = false
             })
+            channel.on("continued_search", ({html}) => {
+                if(html == "") {
+                    return
+                }
+                const container = document.getElementById("snippet-container")
+                this.removeCodeMirrors()
+                container.innerHTML = container.innerHTML + html
+                this.page += 1
+                setTimeout(((event) => { this.stopPagination = false }).bind(this), 1150)
+                this.displayCodeMirrors()
+                this.setUpShuffle()
+            })
+            this.activeEventListeners.push(["search-box","wheel", windowScrollListener])
+            this.activeEventListeners.push(["window","input", searchBarListener])
             this.channels["search"] = channel
         },
         setUpRatingChannel: function() {
@@ -29,7 +65,7 @@ export default () => {
                 return
             }
             let channel = this.socket.channel("rating:*", {})
-            document.body.addEventListener("click", (event) => {
+            const bodyClickListener = (event) => {
                 if(event.target.classList.contains("vote")) {
                     if(!event.target.classList.contains("active")) {
                         if(event.target.classList.contains('up-vote')) {
@@ -53,15 +89,17 @@ export default () => {
                         event.target.classList.remove('active')
                     }
                 }
-            })
-            channel.join()
-                .receive("ok", resp => { console.log("Joined Ratings successfully", resp) })
-                .receive("error", resp => { console.log("Unable to join Ratings", resp) })
+            }
+            document.body.addEventListener("click", bodyClickListener)
             channel.on("rating_change", payload => {
                 const rating = (payload.rating).toFixed(1)
                 document.getElementById(payload.snippet_id).setAttribute("rating", rating)
                 document.getElementById("rating-"+payload.snippet_id).innerText = rating
             })
+            channel.join()
+                .receive("ok", resp => { console.log("Joined Ratings successfully", resp) })
+                .receive("error", resp => { console.log("Unable to join Ratings", resp) })
+            this.activeEventListeners.push(["document", "click", bodyClickListener])
             this.channels["rating"] = channel
         },
         setUpShuffle: function() {
@@ -126,6 +164,9 @@ export default () => {
             if(userToken) {
                 this.socket = new Socket("/socket", {params: {token: userToken}})
             }
+            this.activeEventListeners = []
+            this.page = 1
+            this.stopPagination = false
             this.socket.connect()
             this.channels = {}
             this.displayCodeMirrors()
@@ -133,11 +174,20 @@ export default () => {
             this.setUpRatingChannel()
             this.setUpShuffle()
             this.setUpFilters()
+            this.isMounted = true
         },
-        displayCodeMirrors: function() {
+        removeCodeMirrors: function() {
+            if(this.codeMirrors !== undefined) {
+                this.codeMirrors.forEach((mirror) => {
+                    mirror.toTextArea()
+                })
+                this.codeMirrors = undefined
+            }
+        },
+        displayCodeMirrors: async function() {
             const elements = [].slice.call(document.querySelectorAll('.snippet-area'))
             window.CodeMirror = window.CodeMirror || CodeMirror
-            this.codeMirrors = Promise.all(elements.map((element) => {
+            this.codeMirrors = await Promise.all(elements.map((element) => {
                 let lang = element.getAttribute('language')
                 let snippet = element.getAttribute('snippet')
                 return window._module.import('http://localhost:8000/'+lang+'/'+lang+'.js').then((res) => {
@@ -147,10 +197,22 @@ export default () => {
                 })
             }))
         },
+        unbindEventListeners: function() {
+            this.activeEventListeners.forEach(([elementid, type, fn]) => {
+                if(elementid === "window") {
+                    window.removeEventListener(type, fn)
+                } else if(elementid === "document") {
+                    document.removeEventListener(type, fn)
+                } else {
+                    document.getElementById(elementid).removeEventListener(type, fn)
+                }
+            })
+        },
         unmount: function() {
             this.codeMirrors = null
             this.socket.disconnect()
             this.socket = null
+            this.unbindEventListeners()
             main.unmount()
         },
     }
