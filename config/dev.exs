@@ -15,7 +15,8 @@ config :codesio, CodesioWeb.Endpoint,
                     cd: Path.expand("../assets", __DIR__)]]
 config :elastix,
   shield: true
-
+config :comeonin,
+  bcrypt_log_rounds: 4
 config :elastix,
   httpoison_options: [hackney: [pool: :elastix_pool]]
 # ## SSL Support

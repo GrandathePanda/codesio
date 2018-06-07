@@ -8,7 +8,7 @@ use Mix.Config
 # General application configuration
 config :codesio,
   ecto_repos: [Codesio.Repo]
-
+config :codesio, env: Mix.env
 # Configures the endpoint
 config :codesio, CodesioWeb.Endpoint,
   url: [host: "localhost"],

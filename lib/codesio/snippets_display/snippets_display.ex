@@ -20,12 +20,7 @@ defmodule Codesio.SnippetsDisplay do
     {:asc, :id}
   end
 
-  def paginate_snippets(params, assigns) do
-    user_id = cond do
-      assigns[:current_user] != nil -> assigns[:current_user].id
-      assigns[:user_id] != nil -> assigns[:user_id]
-      true -> nil
-    end
+  def paginate_snippets(params, user_id) do
     case user_id do
       nil -> paginate_snippets(params)
       _ -> paginate_snippets(Map.put(params, "user_id", user_id))
@@ -86,17 +81,17 @@ defmodule Codesio.SnippetsDisplay do
   def paginate_batch_list(ids, params, user_id) do
     query = case user_id do
       nil -> from s in Snippet,
-      where: s.id in ^ids
+        where: s.id in ^ids
       _ -> from s in Snippet,
-      where: s.id in ^ids,
-      left_join: v in Vote, on: [snippet_id: s.id, user_id: ^user_id],
-      preload: [votes: v]
+        where: s.id in ^ids,
+        left_join: v in Vote, on: [snippet_id: s.id, user_id: ^user_id],
+        preload: [votes: v]
     end
 
     page = Repo.paginate(query, params)
     case page do
       :error -> {:error, "Something went wrong."}
-      _ -> format_pagination_results(page, params)
+      _ -> format_pagination_results(page, Map.put(params, "user_id", user_id))
     end
   end
   @doc """

@@ -17,6 +17,7 @@ defmodule Codesio.Application do
       worker(CodesioHelpers.IpBanHelper.ActiveBansAgent, [])
     ]
 
+    CodesioHelpers.ElasticsearchHelper.create_indices()
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Codesio.Supervisor]
