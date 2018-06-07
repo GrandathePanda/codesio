@@ -22,7 +22,6 @@
  ebnf
  ecl
  eiffel
- elixir
  elm
  erlang
  factor
@@ -57,7 +56,6 @@
  nginx
  nsis
  ntriples
- null
  octave
  oz
  pascal

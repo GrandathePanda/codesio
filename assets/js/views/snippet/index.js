@@ -1,5 +1,8 @@
 import mainView from '../main'
 import CodeMirror from "codemirror"
+import "codemirror/addon/mode/overlay"
+import "codemirror/addon/mode/simple"
+import "codemirror/mode/css/css"
 import {Socket} from "phoenix"
 import Shuffle from 'shufflejs'
 const main = mainView()
@@ -27,6 +30,9 @@ export default () => {
                 if(this.stopPagination || !this.isMounted) {
                     return
                 }
+                if(window.innerHeight + Math.round(window.scrollY) < document.body.clientHeight) {
+                    return
+                }
                 this.stopPagination = true
                 const search = document.getElementById("search-box").value
                 const pagination_config = {
@@ -51,7 +57,6 @@ export default () => {
                 this.removeCodeMirrors()
                 container.innerHTML = container.innerHTML + html
                 this.page += 1
-                setTimeout(((event) => { this.stopPagination = false }).bind(this), 1150)
                 this.displayCodeMirrors()
                 this.setUpShuffle()
             })
@@ -191,11 +196,12 @@ export default () => {
                 let lang = element.getAttribute('language')
                 let snippet = element.getAttribute('snippet')
                 return window._module.import('http://localhost:8000/'+lang+'/'+lang+'.js').then((res) => {
-                    let editor = CodeMirror.fromTextArea(element, {lineNumbers: true, mode: lang, readOnly: 'nocursor', theme: 'blackboard'});
+                    let editor = CodeMirror.fromTextArea(element, {lineNumbers: true, mode: lang, readOnly: true, theme: 'blackboard'});
                     editor.getDoc().setValue(snippet)
                     return editor
                 })
             }))
+            setTimeout(((event) => { this.stopPagination = false }).bind(this), 1500)
         },
         unbindEventListeners: function() {
             this.activeEventListeners.forEach(([elementid, type, fn]) => {
