@@ -32,31 +32,14 @@ defmodule CodesioWeb.SearchChannel do
   defp load_search_results("" = _, params, user_id) do
     SnippetsDisplay.paginate_snippets(configure_pagination(params), user_id)
   end
+
   defp load_search_results(body, params, user_id) do
-    {status, body} = ElasticsearchHelper.search_tags(body)
-    body = Enum.at(body, 0)
+    {status, ids} = ElasticsearchHelper.search_tags(body)
     config = configure_pagination(params)
     case status do
-      :ok -> {status_, res} = load_snippets_from_es_results(body, config, user_id)
-        case status_ do
-          :ok ->{:ok, res}
-          _ -> {:error, nil}
-        end
+      :ok -> SnippetsDisplay.paginate_batch_list(ids, config, user_id)
       _ -> {:error, nil}
     end
-  end
-
-  defp load_snippets_from_es_results(results, config, user_id) do
-    snippet_ids = results["options"]
-                  |> Enum.map(fn hit ->
-                    %{ "_source" => source } = hit
-                    source
-                  end)
-                  |> Enum.map(fn source ->
-                    %{ "id" => id } = source
-                    id
-                  end)
-    SnippetsDisplay.paginate_batch_list(snippet_ids, config, user_id)
   end
 
   defp resolve(type, message_type, socket, m \\ nil)
