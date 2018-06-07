@@ -50,7 +50,11 @@ defmodule Codesio.Mixfile do
       {:remote_ip, "~> 0.1.4"},
       {:policy_wonk, "~> 1.0.0-rc.0"},
       {:scrivener_ecto, "~> 1.0"},
-      {:faker, "~> 0.10", only: [:test, :dev]}
+      {:faker, "~> 0.10", only: [:test, :dev]},
+      {:comb, git: "https://github.com/tallakt/comb", only: [:dev, :test]},
+      { :benchwarmer, "~> 0.0.2", only: [:dev, :test]},
+      {:comeonin, "~> 3.0"},
+      {:bcrypt_elixir, "~> 0.12"}
     ]
   end
 
@@ -63,6 +67,7 @@ defmodule Codesio.Mixfile do
   defp aliases do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
+      "ecto.seed": ["run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       "test": ["ecto.create --quiet", "ecto.migrate", "test"]
     ]

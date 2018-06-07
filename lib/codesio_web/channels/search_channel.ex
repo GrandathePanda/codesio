@@ -5,7 +5,7 @@ defmodule CodesioWeb.SearchChannel do
   alias CodesioWeb.SnippetView
   alias CodesioWeb.Endpoint
   use Phoenix.Channel
-  @paginate_params %{ "page_size" => 1, "page" => 1 }
+  @paginate_params %{ "page_size" => 10, "page" => 1 }
 
   defp configure_pagination(%{"pagination_config" => config}) do
     @paginate_params

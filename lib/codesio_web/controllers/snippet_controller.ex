@@ -4,7 +4,7 @@ defmodule CodesioWeb.SnippetController do
   alias Codesio.SnippetsDisplay.Snippet
   alias Codesio.Accounts.User
   alias CodesioHelpers.ElasticsearchHelper
-  @paginate_params %{ "page_size" => 1 }
+  @paginate_params %{ "page_size" => 10 }
   def index(conn, _params) do
     user_id = case conn.assigns[:current_user] do
       nil -> nil
