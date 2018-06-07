@@ -9,6 +9,8 @@ config :codesio, CodesioWeb.Endpoint,
 
 config :elastix,
   shield: true
+config :comeonin,
+  bcrypt_log_rounds: 4
 config :elastix,
   httpoison_options: [hackney: [pool: :elastix_pool]]
 # Print only warnings and errors during test
