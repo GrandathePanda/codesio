@@ -6,7 +6,7 @@ defmodule Codesio.Accounts.User do
     field :email, :string
     field :name, :string
     field :username, :string
-    field :role, UserRoleEnum
+    field :role, UserRoleEnum, default: :user
     has_many :votes, Codesio.Vote
     coherence_schema()
     timestamps()
