@@ -1,22 +1,38 @@
-<h2>Show User</h2>
-
+<a href="javascript:history.back()">Go Back</a>
+<h2><%= @user.username %>'s Profile</h2>
 <ul>
-
   <li>
     <strong>Name:</strong>
     <%= @user.name %>
   </li>
-
-  <li>
-    <strong>Username:</strong>
-    <%= @user.username %>
-  </li>
-
   <li>
     <strong>Email:</strong>
     <%= @user.email %>
   </li>
-
+  <li>
+    <strong>Job's Saved:</strong>
+    <%= 0 %>
+  </li>
 </ul>
-
-<span><%= link "Back", to: user_path(@conn, :index) %></span>
+<h4 id="user-profile-snippet-title">Snippets submitted:</h4>
+<ol>
+  <%= for snippet <- @user_snippets do %>
+    <div class="user-snippet">
+      <li class="user-snippets-sample-list">
+        <div>
+          <label for="language">Language: </label>
+          <span name="language"><%= snippet.language %></span>
+        </div>
+        <div>
+          <label for="rating">Rating: </label>
+          <span name="rating"><%= snippet.rating %></span>
+        </div>
+        <%= link "Show", to: snippet_path(@conn, :show, snippet), class: "btn btn-default btn-xs" %>
+      </li>
+      <div class="tag-list">
+        <label for="rating">Tags: </label>
+        <span name="rating"><%= Enum.join(String.split(snippet.tags, ","), ", ") %></span>
+      </div>
+    </div>
+  <% end %>
+</ol>

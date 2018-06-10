@@ -19,7 +19,11 @@ defmodule Codesio.SnippetsDisplay do
   def sort(_other) do
     {:asc, :id}
   end
-
+  def snippets_for_user(id) do
+    query = from s in Snippet,
+    where: s.user_id == ^id
+    Repo.all(query)
+  end
   def paginate_snippets(params, user_id) do
     case user_id do
       nil -> paginate_snippets(params)

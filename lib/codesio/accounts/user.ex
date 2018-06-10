@@ -2,6 +2,7 @@ defmodule Codesio.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
   use Coherence.Schema
+  @derive {Phoenix.Param, key: :username}
   schema "users" do
     field :email, :string
     field :name, :string

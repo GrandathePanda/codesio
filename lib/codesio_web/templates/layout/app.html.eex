@@ -4,30 +4,39 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
+    <meta name="description" content="Think of Snippy as an instagram for code snippets. Submit snippets, vote on them and 
+    find the snippets most useful for what you are working on.">
+    <meta name="author" content="Ian T Butler">
+    <meta name="user-token" content="<%= assigns[:user_token] %>">
     <title>It looks like you're trying to find some code.</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
   <body data-js-view-name="<%= js_view_name(@conn, @view_template) %>">
-    <div class="container">
+    <div class="container" id="app-container">
       <header class="header">
         <nav role="navigation">
+          <span class="logo"></span>
           <ul class="nav nav-pills pull-right">
-            <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
+            <li><a href="http://www.phoenixframework.org/docs">Donate</a></li>
+            <%= if Coherence.current_user_name(@conn) == nil do %>
+              <li><a href="/sessions/new">Login</a></li>
+            <% else %>
+              <li><%= link "User Profiles", to: user_path(@conn, :index) %></li>
+              <li><%= link "My Profile", to: user_path(@conn, :show, Coherence.current_user(@conn).username) %></li>
+              <li><%= CodesioWeb.Coherence.ViewHelpers.signout_link(@conn) %></li>
+            <% end %>
           </ul>
         </nav>
-        <span class="logo"></span>
       </header>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
-
-      <main role="main">
-        <%= render @view_module, @view_template, assigns %>
-      </main>
+      <div class='sub-container' >
+        <main role="main">
+          <%= render @view_module, @view_template, assigns %>
+        </main>
+      </div>
     </div> <!-- /container -->
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>

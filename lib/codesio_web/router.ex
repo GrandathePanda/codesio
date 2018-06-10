@@ -53,10 +53,21 @@ defmodule CodesioWeb.Router do
 
   scope "/", CodesioWeb do
     pipe_through :always
+    pipe_through :protected
+    pipe_through :authorization
+    pipe_through :browser
+    get "/users", UserController, :index
+    get "/users/:username", UserController, :show
+    resources "/snippets", SnippetController, except: [:index]
+  end
+
+  scope "/", CodesioWeb do
+    pipe_through :always
     pipe_through :browser # Use the default browser stack
     get "/", SnippetController, :index
     get "/snippets", SnippetController, :index
   end
+
   scope "/admin", CodesioWeb.Admin, as: :admin do
     pipe_through :always
     pipe_through :protected
@@ -64,14 +75,6 @@ defmodule CodesioWeb.Router do
     pipe_through :admin
     resources "/snippets", SnippetController
     resources "/banned_ips", BannedIpController
-  end
-  scope "/", CodesioWeb do
-    pipe_through :always
-    pipe_through :protected
-    pipe_through :authorization
-    get "/users", UserController, :index
-    get "/users/show", UserController, :show
-    resources "/snippets", SnippetController, except: [:index]
   end
 
   # Other scopes may use custom stacks.

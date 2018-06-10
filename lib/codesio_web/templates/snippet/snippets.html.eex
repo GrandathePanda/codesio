@@ -1,9 +1,9 @@
 <%= for {snippet, i} <- Enum.with_index(@snippets) do %>
   <div class='snippet-area-container' style="order:<%=i%>;">
-    <textarea class="snippet-area" 
-              language="<%=snippet.language%>" 
-              snippet="<%=snippet.snippet%>" 
-              id="<%=snippet.id%>" 
+    <textarea class="snippet-area"
+              language="<%=snippet.language%>"
+              snippet="<%=snippet.snippet%>"
+              id="<%=snippet.id%>"
               rating="<%=snippet.rating%>"
               data-groups="<%=Poison.encode!(String.split(snippet.tags, ",") ++ [snippet.language])%>"
               created="<%=snippet.inserted_at%>">
