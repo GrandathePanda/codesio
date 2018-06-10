@@ -1,5 +1,5 @@
 /* This file is for your main application css. */
-@import "../node_modules/codemirror/theme/blackboard";
+@import "../node_modules/codemirror/theme/elegant";
 .tagify-me-text {
     border: 0;
     width: 100%;
@@ -9,7 +9,12 @@
 .new-snippet-spacing {
     margin-top: 8%;
 }
-
+nav {
+    padding: 10px 10px 10px 10px;
+}
+header {
+    width: 100%;
+}
 .tagify-me-ul {
     margin-top: 8px;
     margin-bottom: 0;
@@ -19,44 +24,68 @@
     margin-left: 3px;
     padding:0px;
 }
-
+.side-menu {
+    padding: 0px 50px 50px 50px;
+    color: #eee;
+    width: 20%;
+    max-height: 700px;
+}
 .tagify-me-li {
     background-color: #E05f36;
     color: #eeeeee;
 }
 
 .snippet-container {
-    // display: flex;
-    // flex-flow: row wrap;
-    // justify-content: flex-start;
-    // align-items: flex-start;
-    // min-width: 0px;
-    margin-left: 5%;
-    flex: 100%;
+    margin-left: 1%;
+    flex: 1 0;
+}
+.sp-rating {
+    color: #eee;
+    padding-right: 4px;
+}
+div.signin-container {
+    width: 50%;
+    margin: 0 auto;
+    transform: translateY(50%);
+    padding: 30px 30px 30px 30px;
 }
 
 div.snippet-page-snippet-list {
-    background-color: #efefef;
+    min-width: 0px;
+    // background-color: #efefef;
 }
-
+div.snippet-page-container {
+    margin-top: 3%;
+    width: 100%;
+    height: 100%;
+}
 .snippet-area-container {
     // min-width: 0px;
-    padding: 15px 15px 15px 15px;
-    width: 480px;
-    height: 400px;
+    // padding: 15px 15px 15px 15px;
+    width: 460px;
 }
-
+.snippet-page-snippet-actions {
+    padding: {
+        left: 15px;
+        right: 15px;
+    }
+    width: 100%;
+    height: 20%;
+    display: block;
+}
+.snippet-page-snippet-show {
+    float: left;
+}
 .sorting-subblock-hidden {
     display: none;
 }
 
 .btn-default {
-    background-color: #69C54A !important;
     color: white !important;
 }
 
 #app-container {
-    width: 90%;
+    width: 100%;
     max-width: 2000px;
     position: relative;
 }
@@ -70,14 +99,18 @@ div.snippet-page-snippet-list {
 }
 
 .logo {
-    width: 519px;
-    height: 71px;
+    width: 324px;
+    height: 64px;
     display: inline-block;
     margin-bottom: 1em;
-    background-image: url("/images/snippy.png");
-    background-size: 519px 80px;
+    margin-left: 20px;
+    background-image: url("/images/snippy-white.png");
+    background-size: 324px 64px;
 }
-
+.nav-wrapper {
+    padding-left: 20px;
+    padding-right: 20px;
+}
 div.snippet-page-search-wrapper {
     margin-top: -2%;
     width: 100%;
@@ -85,7 +118,7 @@ div.snippet-page-search-wrapper {
 }
 
 input#search-box {
-    width: 100%;
+    width: 80%;
 }
 
 img.vote {

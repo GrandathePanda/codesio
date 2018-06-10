@@ -1,3 +1,4 @@
+import "phoenix_html"
 export default () => {
     return {
         mount: function() {

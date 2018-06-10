@@ -20,7 +20,10 @@ exports.config = {
       // }
     },
     stylesheets: {
-      joinTo: "css/app.css"
+        joinTo: {
+        "css/app.css": ["css/app.scss", "css/phoenix.css", "node_modules/codemirror/lib/codemirror.css"],
+        "css/materialize.css": "css/materialize/materialize.scss"
+        }
     },
     templates: {
       joinTo: "js/app.js"

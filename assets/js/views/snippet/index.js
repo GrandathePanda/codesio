@@ -111,6 +111,8 @@ export default () => {
             const snippetContainer = document.getElementById('snippet-page-snippet-list')
             this.shuffle = new Shuffle(snippetContainer, {
                 useTransforms: true,
+                isCentered: true,
+                gutterWidth: 20
             })
         },
         setUpFilters: function() {
@@ -196,7 +198,7 @@ export default () => {
                 let lang = element.getAttribute('language')
                 let snippet = element.getAttribute('snippet')
                 return window._module.import('http://localhost:8000/'+lang+'/'+lang+'.js').then((res) => {
-                    let editor = CodeMirror.fromTextArea(element, {lineNumbers: true, mode: lang, readOnly: true, theme: 'blackboard'});
+                    let editor = CodeMirror.fromTextArea(element, {lineNumbers: true, mode: lang, readOnly: true, theme: 'elegant'});
                     editor.getDoc().setValue(snippet)
                     return editor
                 })

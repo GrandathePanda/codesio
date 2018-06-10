@@ -10,26 +10,29 @@
     <meta name="user-token" content="<%= assigns[:user_token] %>">
     <title>It looks like you're trying to find some code.</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+    <link rel="stylesheet" href="<%= static_path(@conn, "/css/materialize.css") %>">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
   </head>
 
   <body data-js-view-name="<%= js_view_name(@conn, @view_template) %>">
-    <div class="container" id="app-container">
       <header class="header">
         <nav role="navigation">
-          <span class="logo"></span>
-          <ul class="nav nav-pills pull-right">
-            <li><a href="http://www.phoenixframework.org/docs">Donate</a></li>
-            <%= if Coherence.current_user_name(@conn) == nil do %>
-              <li><a href="/sessions/new">Login</a></li>
-            <% else %>
-              <li><%= link "User Profiles", to: user_path(@conn, :index) %></li>
-              <li><%= link "My Profile", to: user_path(@conn, :show, Coherence.current_user(@conn).username) %></li>
-              <li><%= CodesioWeb.Coherence.ViewHelpers.signout_link(@conn) %></li>
-            <% end %>
-          </ul>
+          <div class="nav-wrapper">
+            <%= link "", to: snippet_path(@conn, :index), class: "logo brand-logo" %>
+            <ul id="nav-mobile" class="right high-on-med-and-down">
+              <li><a href="http://www.phoenixframework.org/docs">Donate</a></li>
+              <%= if Coherence.current_user_name(@conn) == nil do %>
+                <li><a href="/sessions/new">Login</a></li>
+              <% else %>
+                <li><%= link "User Profiles", to: user_path(@conn, :index) %></li>
+                <li><%= link "My Profile", to: user_path(@conn, :show, Coherence.current_user(@conn).username) %></li>
+                <li><%= CodesioWeb.Coherence.ViewHelpers.signout_link(@conn) %></li>
+              <% end %>
+            </ul>
+          </div>
         </nav>
       </header>
-
+    <div class="container" id="app-container">
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
       <div class='sub-container' >

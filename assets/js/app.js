@@ -20,6 +20,8 @@ function handleDOMContentLoaded() {
     // Get the current view name
     window.process = {browser: true};
     window._module = moduleLoader
+    const selectFieldNodes = document.querySelectorAll("select")
+    const selectFieldInstances = M.FormSelect.init(selectFieldNodes, {})
     const viewName = document.getElementsByTagName('body')[0].dataset.jsViewName;
 
     // Load view class and mount it
