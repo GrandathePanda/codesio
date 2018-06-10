@@ -36,7 +36,10 @@ defmodule Codesio.Accounts do
 
   """
   def get_user!(id), do: Repo.get!(User, id)
-
+  @doc """
+  Gets a user by any value on the model. Throws record not found error if no results
+  """
+  def get_user_by!(%{} = params), do: Repo.get_by!(User, params)
   @doc """
   Creates a user.
 

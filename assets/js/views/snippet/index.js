@@ -42,7 +42,7 @@ export default () => {
             }).bind(this)
             window.addEventListener("wheel", windowScrollListener)
             channel.on("new_search", ({html}) => {
-                const container = document.getElementById("snippet-container")
+                const container = document.getElementById("snippet-page-snippet-list")
                 container.innerHTML = html
                 this.displayCodeMirrors()
                 this.setUpShuffle()
@@ -53,7 +53,7 @@ export default () => {
                 if(html == "") {
                     return
                 }
-                const container = document.getElementById("snippet-container")
+                const container = document.getElementById("snippet-page-snippet-list")
                 this.removeCodeMirrors()
                 container.innerHTML = container.innerHTML + html
                 this.page += 1
@@ -108,7 +108,7 @@ export default () => {
             this.channels["rating"] = channel
         },
         setUpShuffle: function() {
-            const snippetContainer = document.getElementById('snippet-container')
+            const snippetContainer = document.getElementById('snippet-page-snippet-list')
             this.shuffle = new Shuffle(snippetContainer, {
                 useTransforms: true,
             })

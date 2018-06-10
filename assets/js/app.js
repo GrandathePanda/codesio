@@ -12,9 +12,9 @@
 // If you no longer want to use a dependency, remember
 // to also remove its path from "config.paths.watched".
 require("babel-polyfill")
+import "phoenix_html"
 import { moduleLoader } from './common.js'
 import loadView from './views/loader';
-import "phoenix_html"
 
 function handleDOMContentLoaded() {
     // Get the current view name
