@@ -14,7 +14,6 @@ defmodule CodesioWeb.SnippetController do
     assigns = res
               |> Map.put(:user_id, user_id)
               |> Map.put(:languages, CodesioWeb.get_supported_languages())
-              |> Map.put(:layout, {CodesioWeb.LayoutView, "snippet_index.html"})
     case status do
       :ok -> render(conn, "index.html", assigns)
       :error -> conn |> put_flash(:error, "Unable to load snippets.") |> redirect(to: snippet_path(conn, :index))
