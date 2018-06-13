@@ -1,10 +1,21 @@
-<h2>Show Snippet</h2>
-
-<div>
+<div class="snippet-page-edit-show-new-single-container card-panel z-depth-3">
+<h3>Language: <%=@snippet.language%></h3>
+<div class="z-depth-2">
   <textarea id="snippet-area" class="snippet-area" language="<%=@snippet.language%>" snippet="<%=@snippet.snippet%>"></textarea>
 </div>
-<h3><%=@snippet.language%></h3>
-
-<span><%= link "Edit", to: snippet_path(@conn, :edit, @snippet) %></span>
-<span><%= link "Back", to: snippet_path(@conn, :index) %></span>
+<h4>Tags:</h4>
+<ul class="snippet-page-show-tags">
+  <%= for tag <- String.split(@snippet.tags, ",") do %>
+    <li class="snippet-page-show-tag-li shades vibrant-indigo z-depth-1"><%= tag %></li>
+  <% end %>
+</ul>
+<br />
+<br />
+<br />
+<span><%= link "Back", to: snippet_path(@conn, :index), class: "btn btn-default btn-xs" %></span>
+<%= if @user_id == @snippet.user_id do %>
+  <span><%= link "Edit", to: snippet_path(@conn, :edit, @snippet), class: "btn btn-default btn-xs" %></span>
+  <span><%= link "Delete", to: snippet_path(@conn, :delete, @snippet), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+<% end %>
 <span id="common-js" data-main="<%= static_path(@conn, "/js/app.js") %>" />
+</div>

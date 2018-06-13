@@ -1,5 +1,13 @@
 defmodule CodesioWeb.LayoutView do
   use CodesioWeb, :view
+  def conditional_classes_for_body(conn, view_template) do
+    case js_view_name(conn, view_template) do
+      "SnippetNewView" -> "purple darken-2"
+      "SnippetShowView" -> "purple darken-2"
+      "SnippetEditView" -> "purple darken-2"
+      _ -> ""
+    end
+  end
   def js_view_name(conn, view_template) do
     [view_name(conn), template_name(view_template)]
     |> Enum.reverse

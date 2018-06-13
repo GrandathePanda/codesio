@@ -4,18 +4,18 @@
       <p>Oops, something went wrong! Please check the errors below.</p>
     </div>
   <% end %>
-  <div class="form-group">
-    <%= label f, :snippet, class: "control-label" %>
+  <%= label f, :snippet, class: "control-label" %>
+  <div class="form-group z-depth-1">
     <%= textarea f, :snippet, class: "form-control snippet-editor" %>
   </div>
   <div class="form-group">
     <%= label f, :tags, class: "control-label" %>
-    <%= text_input f, :tags, class: "form-control tagify-me"%>
+    <%= text_input f, :tags, class: "tagify-me"%>
     <%= error_tag f, :tags %>
   </div>
   <div class="form-group new-snippet-spacing">
     <%= label f, :language, class: "control-label"%>
-    <%= select f, :language, @languages, class: 'form-control', onChange: "window.currentView.changeLanguage(event)", id: "language-selector"%>
+    <%= select f, :language, @languages, class: "", onChange: "window.currentView.changeLanguage(event)", id: "language-selector"%>
     <%= error_tag f, :language %>
   </div>
   <div class="form-group" id="new-snippet-submit">

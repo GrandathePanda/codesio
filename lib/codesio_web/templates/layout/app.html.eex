@@ -11,10 +11,11 @@
     <title>It looks like you're trying to find some code.</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/materialize.css") %>">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
   </head>
 
-  <body data-js-view-name="<%= js_view_name(@conn, @view_template) %>">
+  <body class="<%=conditional_classes_for_body(@conn, @view_template)%>" data-js-view-name="<%= js_view_name(@conn, @view_template) %>">
       <header class="header">
         <nav role="navigation">
           <div class="nav-wrapper">
@@ -24,7 +25,7 @@
               <%= if Coherence.current_user_name(@conn) == nil do %>
                 <li><a href="/sessions/new">Login</a></li>
               <% else %>
-                <li><%= link "User Profiles", to: user_path(@conn, :index) %></li>
+                <li><%= link "Users", to: user_path(@conn, :index) %></li>
                 <li><%= link "My Profile", to: user_path(@conn, :show, Coherence.current_user(@conn).username) %></li>
                 <li><%= CodesioWeb.Coherence.ViewHelpers.signout_link(@conn) %></li>
               <% end %>
@@ -32,7 +33,7 @@
           </div>
         </nav>
       </header>
-    <div class="container" id="app-container">
+      <div class="container" id="app-container">
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
       <div class='sub-container' >

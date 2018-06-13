@@ -55,10 +55,11 @@ export default () => {
                 }
                 const container = document.getElementById("snippet-page-snippet-list")
                 this.removeCodeMirrors()
-                container.innerHTML = container.innerHTML + html
+                this.shuffle.element.insertAdjacentHTML("beforeend", html)
+                const newElements = document.querySelectorAll("div:not(.shuffle-item).snippet-area-container")
+                this.shuffle.add(Array.prototype.slice.call(newElements))
                 this.page += 1
                 this.displayCodeMirrors()
-                this.setUpShuffle()
             })
             this.activeEventListeners.push(["search-box","wheel", windowScrollListener])
             this.activeEventListeners.push(["window","input", searchBarListener])
@@ -115,6 +116,9 @@ export default () => {
                 gutterWidth: 20
             })
         },
+        appendToShuffle: function() {
+
+        },
         setUpFilters: function() {
             const ratings = [].slice.call(document.getElementsByName("rating-filter"))
             const shuffle = this.shuffle
@@ -149,12 +153,12 @@ export default () => {
             ageSortSelect.onchange = function() {
                 if(this.value === 'Newest') {
                     shuffle.sort({
-                        reverse: false,
+                        reverse: true,
                         by: ageSortPred
                     })
                 } else if(this.value === "Oldest") {
                     shuffle.sort({
-                        reverse: true,
+                        reverse: false,
                         by: ageSortPred
                     })
                 } else {

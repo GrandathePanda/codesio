@@ -11,10 +11,10 @@
     <br />
     <br />
     <div class="text-right snippet-page-snippet-actions">
-      <span class="snippet-page-snippet-show z-depth-2"><%= link "Show", to: snippet_path(@endpoint, :show, snippet), class: "btn btn-default btn-xs" %></span>
+      <span class="snippet-page-snippet-links z-depth-2"><%= link "Show", to: snippet_path(@endpoint, :show, snippet), class: "btn btn-default btn-xs" %></span>
       <%= if @user_id == snippet.user_id do %>
-        <span><%= link "Edit", to: snippet_path(@endpoint, :edit, snippet), class: "btn btn-default btn-xs" %></span>
-        <span><%= link "Delete", to: snippet_path(@endpoint, :delete, snippet), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+        <span class="snippet-page-snippet-links"><%= link "Edit", to: snippet_path(@endpoint, :edit, snippet), class: "btn btn-default btn-xs" %></span>
+        <span class="snippet-page-snippet-links"><%= link "Delete", to: snippet_path(@endpoint, :delete, snippet), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
       <% end %>
       <span class="vote-container">
         <span class="sp-rating" id="rating-<%=snippet.id%>"><%= snippet.rating %></span>

@@ -1,5 +1,7 @@
 /* This file is for your main application css. */
 @import "../node_modules/codemirror/theme/elegant";
+@import "./materialize/components/_color-variables.scss";
+@import "./materialize/components/_color-classes.scss";
 .tagify-me-text {
     border: 0;
     width: 100%;
@@ -7,7 +9,7 @@
 }
 
 .new-snippet-spacing {
-    margin-top: 8%;
+    margin-top: 4%;
 }
 nav {
     padding: 10px 10px 10px 10px;
@@ -31,10 +33,21 @@ header {
     max-height: 700px;
 }
 .tagify-me-li {
-    background-color: #E05f36;
+    background-color: color("shades", "vibrant-indigo");
     color: #eeeeee;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14),
+    0 3px 1px -2px rgba(0,0,0,0.12),
+    0 1px 5px 0 rgba(0,0,0,0.2);
 }
-
+.tagify-me-li > a {
+    color: #eee;
+}
+.user-page-index-container {
+    width: 70%;
+    margin: 0 auto;
+}
+.user-page-table-row {
+}
 .snippet-container {
     margin-left: 1%;
     flex: 1 0;
@@ -43,11 +56,14 @@ header {
     color: #eee;
     padding-right: 4px;
 }
-div.signin-container {
+div.register-or-signin-container {
     width: 50%;
     margin: 0 auto;
     transform: translateY(50%);
     padding: 30px 30px 30px 30px;
+}
+div.register {
+    margin-top: -10%;
 }
 
 div.snippet-page-snippet-list {
@@ -73,8 +89,12 @@ div.snippet-page-container {
     height: 20%;
     display: block;
 }
-.snippet-page-snippet-show {
+.snippet-page-snippet-links {
     float: left;
+    margin: {
+        left: 2px;
+        right: 2px;
+    }
 }
 .sorting-subblock-hidden {
     display: none;
@@ -123,6 +143,7 @@ input#search-box {
 
 img.vote {
     width: 35px;
+    cursor: pointer;
 }
 
 span.vote-container {
@@ -134,10 +155,8 @@ li.user-snippets-sample-list {
     flex-flow: row nowrap;
     align-items: start;
     justify-content: center;
-    background-color: #efefef;
+    background-color: #fff;
     padding: {
-        left: 10px;
-        right: 10px;
         top: 2px;
         bottom: 2px;
     }
@@ -146,7 +165,8 @@ div.user-snippet {
     margin: {
         bottom: 10px;
     }
-    background-color: #dedede;
+    margin-bottom: 40px;
+    height: 80px;
 }
 
 h4#user-profile-snippet-title {
@@ -155,15 +175,63 @@ h4#user-profile-snippet-title {
     }
 }
 
-div.tag-list {
+div.user-page-show-profile {
+    color: #fff;
+    padding: {
+        top: 3px;
+        left: 30px;
+    }
+    font-size: 1.5em;
+    width: 40%;
+    // margin: 0 auto;
+}
+
+td.tag-list {
     padding: {
         left: 10px;
         right: 10px;
         top: 2px;
         bottom: 2px;
     }
+    color: #eee;
 }
 
-li.user-snippets-sample-list > * {
-    flex: 20%;
+li.user-snippets-sample-list > *:not(.btn) {
+    width: 33%;
+}
+li.snippet-page-show-tag-li {
+    float: left;
+    padding: {
+        left: 10px;
+        right: 10px;
+        top: 8px;
+        bottom: 8px;
+    }
+    margin: {
+        left: 2px;
+        right: 2px;
+    }
+}
+ul.user-page-index-pagination {
+    transform: translateX(100%)
+}
+ul.snippet-page-show-tags {
+    color: #eee;
+    font-size: 1.2em;
+}
+div.snippet-page-edit-show-new-single-container {
+    padding: {
+        left: 30px;
+        right: 30px;
+        top: 5px;
+    }
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 2%;
+}
+div.user-page-show-container {
+    padding: {
+        left: 20px;
+        right: 20px;
+    }
 }
