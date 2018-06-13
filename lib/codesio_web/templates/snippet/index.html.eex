@@ -1,8 +1,8 @@
-<h2>Snippets</h2>
-<span><%= link "New Snippet", to: snippet_path(@conn, :new) %></span>
 <div class="snippet-page-container">
   <div class='showcase-container'>
-    <div class="side-menu" id="snippet-index-side-menu">
+    <div class="side-menu card-panel large shades vibrant-indigo z-depth-5" id="snippet-index-side-menu">
+      <h2>Snippets</h2>
+      <span><%= link "New Snippet", to: snippet_path(@conn, :new) %></span>
       <h3>Filters</h3>
       <div class="filter-block" id="language-block">
         <label for="language-filter">Language</label>
@@ -24,7 +24,7 @@
     </div>
     <div class='snippet-container' id='snippet-container'>
       <div class="snippet-page-search-wrapper">
-        <input type="text" id="search-box"></input>
+        <input type="text" id="search-box" placeholder="Search here..."></input>
       </div>
       <br />
       <div class="snippet-page-snippet-list" id="snippet-page-snippet-list">

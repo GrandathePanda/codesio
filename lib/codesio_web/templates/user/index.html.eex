@@ -1,26 +1,24 @@
-<a href="javascript:history.back()">Go Back</a>
-<table class="table">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Username</th>
-      <th>Email</th>
+<div class= "user-page-index-container">
+  <a class="btn btn-default btn-xs shades vibrant-indigo" href="javascript:history.back()">Go Back</a>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Job's Saved</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for user <- @users do %>
+        <tr class="user-page-table-row">
+          <td><%= user.username %></td>
+          <td><%= user.email %></td>
 
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-<%= for user <- @users do %>
-    <tr>
-      <td><%= user.name %></td>
-      <td><%= user.username %></td>
-      <td><%= user.email %></td>
-
-      <td class="text-right">
-        <span><%= link "Show", to: user_path(@conn, :show, %User{username: user.username}), class: "btn btn-default btn-xs" %></span>
-      </td>
-    </tr>
-<% end %>
-  </tbody>
-</table>
-
+          <td class="text-right">
+            <span><%= link "Show", to: user_path(@conn, :show, %User{username: user.username}), class: "btn btn-default btn-xs" %></span>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

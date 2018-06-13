@@ -1,5 +1,5 @@
 <%= for {snippet, i} <- Enum.with_index(@snippets) do %>
-  <div class='snippet-area-container' style="order:<%=i%>;">
+  <div class='snippet-area-container card medium shades midnight z-depth-2' style="order:<%=i%>;">
     <textarea class="snippet-area"
               language="<%=snippet.language%>"
               snippet="<%=snippet.snippet%>"
@@ -8,14 +8,16 @@
               data-groups="<%=Poison.encode!(String.split(snippet.tags, ",") ++ [snippet.language])%>"
               created="<%=snippet.inserted_at%>">
     </textarea>
-    <td class="text-right">
-      <span><%= link "Show", to: snippet_path(@endpoint, :show, snippet), class: "btn btn-default btn-xs" %></span>
+    <br />
+    <br />
+    <div class="text-right snippet-page-snippet-actions">
+      <span class="snippet-page-snippet-links z-depth-2"><%= link "Show", to: snippet_path(@endpoint, :show, snippet), class: "btn btn-default btn-xs" %></span>
       <%= if @user_id == snippet.user_id do %>
-        <span><%= link "Edit", to: snippet_path(@endpoint, :edit, snippet), class: "btn btn-default btn-xs" %></span>
-        <span><%= link "Delete", to: snippet_path(@endpoint, :delete, snippet), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+        <span class="snippet-page-snippet-links"><%= link "Edit", to: snippet_path(@endpoint, :edit, snippet), class: "btn btn-default btn-xs" %></span>
+        <span class="snippet-page-snippet-links"><%= link "Delete", to: snippet_path(@endpoint, :delete, snippet), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
       <% end %>
       <span class="vote-container">
-        <span id="rating-<%=snippet.id%>"><%= snippet.rating %></span>
+        <span class="sp-rating" id="rating-<%=snippet.id%>"><%= snippet.rating %></span>
         <%= if not Ecto.assoc_loaded?(snippet.votes) or is_nil(List.first(snippet.votes)) do %>
           <img snippetid="<%= snippet.id %>" src="<%= static_path(@endpoint, "/images/curly-bracket-up.svg") %>" class="up-vote vote"></img><img snippetid="<%= snippet.id %>" src="<%= static_path(@endpoint, "/images/curly-bracket-down.svg") %>" class="down-vote vote"></img>
         <% else %>
@@ -27,8 +29,6 @@
           <% end %>
         <% end %>
       </span>
-    </td>
-    <td class="text-right">
-    </td>
+    </div>
   </div>
 <% end %>

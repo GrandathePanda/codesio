@@ -1,38 +1,43 @@
-<a href="javascript:history.back()">Go Back</a>
-<h2><%= @user.username %>'s Profile</h2>
-<ul>
-  <li>
-    <strong>Name:</strong>
-    <%= @user.name %>
-  </li>
-  <li>
-    <strong>Email:</strong>
-    <%= @user.email %>
-  </li>
-  <li>
-    <strong>Job's Saved:</strong>
-    <%= 0 %>
-  </li>
-</ul>
-<h4 id="user-profile-snippet-title">Snippets submitted:</h4>
-<ol>
-  <%= for snippet <- @user_snippets do %>
-    <div class="user-snippet">
-      <li class="user-snippets-sample-list">
-        <div>
-          <label for="language">Language: </label>
-          <span name="language"><%= snippet.language %></span>
-        </div>
-        <div>
-          <label for="rating">Rating: </label>
-          <span name="rating"><%= snippet.rating %></span>
-        </div>
-        <%= link "Show", to: snippet_path(@conn, :show, snippet), class: "btn btn-default btn-xs" %>
-      </li>
-      <div class="tag-list">
-        <label for="rating">Tags: </label>
-        <span name="rating"><%= Enum.join(String.split(snippet.tags, ","), ", ") %></span>
-      </div>
-    </div>
-  <% end %>
-</ol>
+<div class="user-page-show-container">
+  <a class="btn btn-default btn-xs" href="javascript:history.back()">Go Back</a>
+  <div class="user-page-show-profile card small shades vibrant-indigo z-depth-2">
+    <h2><%= @user.username %></h2>
+    <li>
+      <strong>Name:</strong>
+      <%= @user.name %>
+    </li>
+    <li>
+      <strong>Email:</strong>
+      <%= @user.email %>
+    </li>
+    <li>
+      <strong>Job's Saved:</strong>
+      <%= 0 %>
+    </li>
+  </div>
+  <br />
+  <h4 id="user-profile-snippet-title"><%= @user.username %>'s Snippets:</h4>
+  <table class="table">
+    <tbody>
+      <%= for snippet <- @user_snippets do %>
+        <tr class="user-page-table-row">
+          <td>
+            <label for="language">Language: </label>
+            <span name="language"><%= snippet.language %></span>
+          </td>
+          <td>
+            <label for="rating">Rating: </label>
+            <span name="rating"><%= snippet.rating %></span>
+          </td>
+          <td>
+            <%= link "Show", to: snippet_path(@conn, :show, snippet), class: "btn btn-default btn-xs" %>
+          </td>
+          <td class="tag-list shades midnight">
+            <label for="rating">Tags: </label>
+            <span name="rating"><%= Enum.join(String.split(snippet.tags, ","), ", ") %></span>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

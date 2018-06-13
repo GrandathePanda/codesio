@@ -20,8 +20,8 @@ defmodule CodesioHelpers.AuthorizationServices do
       end
     end
 
-    def policy(conn, {:is_snippet_owner, snippet_user_id}) do
-      current_user_id = conn.assigns[:current_user].id
+    def policy(assigns, {:is_snippet_owner, snippet_user_id}) do
+      current_user_id = assigns[:current_user].id
       case current_user_id == snippet_user_id do
         true -> :ok
         false -> {:error, :is_snippet_owner}

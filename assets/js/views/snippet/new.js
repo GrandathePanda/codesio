@@ -11,7 +11,7 @@ export default () => {
             window.CodeMirror = window.CodeMirror || CodeMirror
             window._module.import('http://localhost:8000/'+value+'/'+value+'.js').then((res) => {
                 this.codeMirrors = elements.map((element) => {
-                    return CodeMirror.fromTextArea(element, { lineNumbers: true, mode: value });
+                    return CodeMirror.fromTextArea(element, { lineNumbers: true, mode: value, theme: "elegant" });
                 })
             })
 

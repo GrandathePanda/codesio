@@ -6,10 +6,7 @@ defmodule CodesioWeb.SnippetController do
   alias CodesioHelpers.ElasticsearchHelper
   @paginate_params %{ "page_size" => 10 }
   def index(conn, _params) do
-    user_id = case conn.assigns[:current_user] do
-      nil -> nil
-      %User{} -> conn.assigns[:current_user].id
-    end
+    user_id = get_user_id(conn)
     {status, res} = SnippetsDisplay.paginate_snippets(@paginate_params, user_id)
     assigns = res
               |> Map.put(:user_id, user_id)
@@ -31,6 +28,7 @@ defmodule CodesioWeb.SnippetController do
       is_binary(tags) -> String.split(tags, ",", trim: true)
       true -> nil
     end
+    snippet_params = Map.put(snippet_params, "user_id", get_user_id(conn))
     case SnippetsDisplay.create_snippet(%{ snippet_params | "tags" => tags }) do
       {:ok, snippet} ->
         params = %{ snippet_params | "tags" => tags }
@@ -46,20 +44,21 @@ defmodule CodesioWeb.SnippetController do
 
   def show(conn, %{"id" => id}) do
     snippet = SnippetsDisplay.get_snippet!(id)
-    render(conn, "show.html", snippet: snippet)
+    render(conn, "show.html", snippet: snippet, user_id: get_user_id(conn))
   end
 
   def edit(conn, %{"id" => id}) do
     snippet = SnippetsDisplay.get_snippet!(id)
     if CodesioHelpers.AuthorizationServices.Policies.authorized?(conn, {:is_snippet_owner, snippet.user_id}) do
+      changeset = SnippetsDisplay.change_snippet(snippet)
+      render(conn, "edit.html", snippet: snippet, changeset: changeset, languages: CodesioWeb.get_supported_languages())
+    else
       conn
       |> put_flash(:error, "Can only edit snippets you created.")
       |> redirect(to: snippet_path(conn, :index))
-    else
-      changeset = SnippetsDisplay.change_snippet(snippet)
-      render(conn, "edit.html", snippet: snippet, changeset: changeset, languages: CodesioWeb.get_supported_languages())
     end
   end
+
   defp persist_changes(snippet, snippet_params, conn) do
     case SnippetsDisplay.update_snippet(snippet, snippet_params) do
       {:ok, snippet} ->
@@ -92,6 +91,13 @@ defmodule CodesioWeb.SnippetController do
       conn
       |> put_flash(:info, "Snippet deleted successfully.")
       |> redirect(to: snippet_path(conn, :index))
+    end
+  end
+
+  defp get_user_id(conn) do
+    case conn.assigns[:current_user] do
+      nil -> nil
+      %User{} -> conn.assigns[:current_user].id
     end
   end
 end

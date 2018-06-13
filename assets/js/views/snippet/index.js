@@ -55,10 +55,11 @@ export default () => {
                 }
                 const container = document.getElementById("snippet-page-snippet-list")
                 this.removeCodeMirrors()
-                container.innerHTML = container.innerHTML + html
+                this.shuffle.element.insertAdjacentHTML("beforeend", html)
+                const newElements = document.querySelectorAll("div:not(.shuffle-item).snippet-area-container")
+                this.shuffle.add(Array.prototype.slice.call(newElements))
                 this.page += 1
                 this.displayCodeMirrors()
-                this.setUpShuffle()
             })
             this.activeEventListeners.push(["search-box","wheel", windowScrollListener])
             this.activeEventListeners.push(["window","input", searchBarListener])
@@ -111,7 +112,12 @@ export default () => {
             const snippetContainer = document.getElementById('snippet-page-snippet-list')
             this.shuffle = new Shuffle(snippetContainer, {
                 useTransforms: true,
+                isCentered: true,
+                gutterWidth: 20
             })
+        },
+        appendToShuffle: function() {
+
         },
         setUpFilters: function() {
             const ratings = [].slice.call(document.getElementsByName("rating-filter"))
@@ -147,12 +153,12 @@ export default () => {
             ageSortSelect.onchange = function() {
                 if(this.value === 'Newest') {
                     shuffle.sort({
-                        reverse: false,
+                        reverse: true,
                         by: ageSortPred
                     })
                 } else if(this.value === "Oldest") {
                     shuffle.sort({
-                        reverse: true,
+                        reverse: false,
                         by: ageSortPred
                     })
                 } else {
@@ -196,7 +202,7 @@ export default () => {
                 let lang = element.getAttribute('language')
                 let snippet = element.getAttribute('snippet')
                 return window._module.import('http://localhost:8000/'+lang+'/'+lang+'.js').then((res) => {
-                    let editor = CodeMirror.fromTextArea(element, {lineNumbers: true, mode: lang, readOnly: true, theme: 'blackboard'});
+                    let editor = CodeMirror.fromTextArea(element, {lineNumbers: true, mode: lang, readOnly: true, theme: 'elegant'});
                     editor.getDoc().setValue(snippet)
                     return editor
                 })

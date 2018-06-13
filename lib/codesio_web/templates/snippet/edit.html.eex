@@ -1,5 +1,7 @@
+<div class="snippet-page-edit-show-new-single-container card-panel z-depth-3">
 <h2>Edit Snippet</h2>
 
 <%= render "form.html", Map.put(assigns, :action, snippet_path(@conn, :update, @snippet)) %>
 
 <span><%= link "Back", to: snippet_path(@conn, :index) %></span>
+</div>

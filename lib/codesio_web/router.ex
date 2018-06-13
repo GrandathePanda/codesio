@@ -58,7 +58,7 @@ defmodule CodesioWeb.Router do
     pipe_through :browser
     get "/users", UserController, :index
     get "/users/:username", UserController, :show
-    resources "/snippets", SnippetController, except: [:index]
+    resources "/snippets", SnippetController, except: [:index, :show]
   end
 
   scope "/", CodesioWeb do
@@ -66,6 +66,7 @@ defmodule CodesioWeb.Router do
     pipe_through :browser # Use the default browser stack
     get "/", SnippetController, :index
     get "/snippets", SnippetController, :index
+    get "/snippets/:id", SnippetController, :show
   end
 
   scope "/admin", CodesioWeb.Admin, as: :admin do
