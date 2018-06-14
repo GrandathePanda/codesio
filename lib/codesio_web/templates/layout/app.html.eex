@@ -21,14 +21,15 @@
           <div class="nav-wrapper">
             <%= link "", to: snippet_path(@conn, :index), class: "logo brand-logo" %>
             <ul id="nav-mobile" class="right high-on-med-and-down">
-              <li><a href="http://www.phoenixframework.org/docs">Donate</a></li>
               <%= if Coherence.current_user_name(@conn) == nil do %>
                 <li><a href="/sessions/new">Login</a></li>
               <% else %>
+                <li>Job's Saved: <%= @user_score %></li>
                 <li><%= link "Users", to: user_path(@conn, :index) %></li>
                 <li><%= link "My Profile", to: user_path(@conn, :show, Coherence.current_user(@conn).username) %></li>
                 <li><%= CodesioWeb.Coherence.ViewHelpers.signout_link(@conn) %></li>
               <% end %>
+              <li><a href="http://www.phoenixframework.org/docs">Donate</a></li>
             </ul>
           </div>
         </nav>

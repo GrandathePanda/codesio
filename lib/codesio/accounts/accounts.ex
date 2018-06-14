@@ -37,6 +37,10 @@ defmodule Codesio.Accounts do
   """
   def get_user!(id), do: Repo.get!(User, id)
   @doc """
+    Gets a single user but returns nil if record not found instead of raising an error.
+  """
+  def get_user(id), do: Repo.get(User, id)
+  @doc """
   Gets a user by any value on the model. Throws record not found error if no results
   """
   def get_user_by!(%{} = params), do: Repo.get_by!(User, params)
