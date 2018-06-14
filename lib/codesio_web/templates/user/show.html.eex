@@ -12,7 +12,7 @@
     </li>
     <li>
       <strong>Job's Saved:</strong>
-      <%= 0 %>
+      <%= @user.score %>
     </li>
   </div>
   <br />

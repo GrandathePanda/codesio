@@ -1,6 +1,7 @@
 defmodule CodesioWeb.Router do
   use CodesioWeb, :router
   use Coherence.Router
+  alias Codesio.Accounts
 
   pipeline :always do
     plug :accepts, ["html"]
@@ -8,6 +9,7 @@ defmodule CodesioWeb.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug :put_user_score
   end
 
   pipeline :api do
@@ -27,6 +29,7 @@ defmodule CodesioWeb.Router do
   pipeline :protected do
     plug Coherence.Authentication.Session, protected: true
     plug :put_user_token
+    plug :put_user_score
   end
 
   defp put_user_token(conn, _) do
@@ -35,6 +38,15 @@ defmodule CodesioWeb.Router do
       assign(conn, :user_token, token)
     else
       conn
+    end
+  end
+
+  defp put_user_score(conn, _) do
+    if current_user = conn.assigns[:current_user] do
+      score = Accounts.get_user(conn.assigns[:current_user].id).score
+      assign(conn, :user_score, score)
+    else
+      assign(conn, :user_score, 0)
     end
   end
 

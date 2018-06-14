@@ -13,7 +13,7 @@
         <tr class="user-page-table-row">
           <td><%= user.username %></td>
           <td><%= user.email %></td>
-
+          <td><%= user.score %></td>
           <td class="text-right">
             <span><%= link "Show", to: user_path(@conn, :show, %User{username: user.username}), class: "btn btn-default btn-xs" %></span>
           </td>

@@ -7,6 +7,7 @@ defmodule CodesioWeb.RatingChannel do
   alias Codesio.Repo
   alias Codesio.Vote
   alias Codesio.SnippetsDisplay.Snippet
+  alias Codesio.Accounts
   import Ecto.Query, warn: false
   use Phoenix.Channel
 
@@ -17,6 +18,8 @@ defmodule CodesioWeb.RatingChannel do
   def handle_in("upvote", %{"body" => body}, socket) do
     {rating, res} = handle_vote(:upvote, :downvote, body, socket)
     if not is_nil(rating) do
+      user = Repo.one(Ecto.assoc(SnippetsDisplay.get_snippet(body), :user))
+      Accounts.update_user(user, %{ score: user.score + 1 })
       push socket, "rating_change", %{rating: rating, snippet_id: body}
     end
     res
@@ -39,6 +42,8 @@ defmodule CodesioWeb.RatingChannel do
     {status, _} = Repo.transaction(fn ->
       push socket, "rating_change", %{rating: undo_rating(vote.type, id), snippet_id: id}
       Repo.delete(vote)
+      user = Repo.one(Ecto.assoc(SnippetsDisplay.get_snippet(id), :user))
+      Accounts.update_user(user, %{ score: user.score - 1 })
     end)
     case status do
       :ok -> {:reply, :ok, socket}
@@ -63,6 +68,10 @@ defmodule CodesioWeb.RatingChannel do
       :ok -> {rating, {:reply, :ok, socket}}
       _ -> {nil, {:reply, :error, socket}}
     end
+  end
+
+  defp increase_user_score() do
+
   end
 
   defp new_vote(user_id, snippet_id, type, %Vote{} = vote) do

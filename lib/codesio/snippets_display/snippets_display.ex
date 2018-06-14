@@ -135,6 +135,11 @@ defmodule Codesio.SnippetsDisplay do
   def get_snippet!(id), do: Repo.get!(Snippet, id)
 
   @doc """
+  Gets a single snippet and returns nil if the Snippet does not exist.
+  """
+  def get_snippet(id), do: Repo.get(Snippet, id)
+
+  @doc """
   Creates a snippet.
 
   ## Examples
