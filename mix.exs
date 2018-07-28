@@ -20,7 +20,7 @@ defmodule Codesio.Mixfile do
   def application do
     [
       mod: {Codesio.Application, []},
-      extra_applications: [:logger, :runtime_tools, :coherence, :elastix, :scrivener_ecto],
+      extra_applications: [:logger, :runtime_tools, :coherence, :elastix, :scrivener_ecto, :ssl],
     ]
   end
 

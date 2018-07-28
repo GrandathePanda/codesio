@@ -15,8 +15,15 @@ use Mix.Config
 # which you typically run after static files are built.
 config :codesio, CodesioWeb.Endpoint,
   load_from_system_env: true,
-  url: [host: "example.com", port: 80],
-  cache_static_manifest: "priv/static/cache_manifest.json"
+  url: [host: "snippy.app", port: 80],
+  cache_static_manifest: "priv/static/cache_manifest.json",
+  https: [
+    port: 443,
+    otp_app: :codesio,
+    keyfile: System.get_env("SNIPPY_SSL_KEY_PATH"),
+    certfile: System.get_env("SNIPPY_SSL_CERT_PATH"),
+    cacertfile: System.get_env("INTERMEDIATE_CERT_FILE")
+  ]
 
 # Do not print debug messages in production
 config :logger, level: :info
